@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>FED Codepen</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div id="app"
+         class="container">
+        <template>
+            <ais-instant-search :search-client="searchClient"
+                                :index-name="indexName"
+                                :routing="routing">
+
+                <ais-configure filters="category: people" />
+
+                <section class="row align-items-end mb-4">
+                    <div class="col-xl-9 mb-3">
+                        <ais-search-box>
+                            <template v-slot="{ currentRefinement, isSearchStalled, refine }">
+                                <div class="input-group rounded">
+
+                                    <template v-if="isSearchStalled">
+                                        <span class="input-group-text">
+                                            <i class="spinner-border spinner-border-sm text-secondary"
+                                               role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </i>
+                                        </span>
+                                    </template>
+
+                                    <label class="sr-only"
+                                           for="searchbox-input">Search by Keyword</label>
+                                    <input id="searchbox-input"
+                                           class="form-control"
+                                           type="search"
+                                           v-on:input="refineSearch(refine, $event.currentTarget.value)"
+                                           :value="currentRefinement"
+                                           :disabled="isSearchStalled"
+                                           placeholder="Example Search: Risk Management"
+                                           autocomplete="nope"
+                                           autocorrect="off"
+                                           autocapitalize="none"
+                                           spellcheck="false">
+
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary m-0 px-4"
+                                                type="button"
+                                                :disabled="isSearchStalled">
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                        </ais-search-box>
+                    </div>
+                </section>
+
+                <div class="row">
+                    <div class="col-xl-4">
+
+                        <section class="mb-4">
+                            <div class="accordion"
+                                 id="accordionExample">
+
+                                <h2 class="mt-0 mb-4">Filters</h2>
+
+                                <ais-refinement-list :sort-by="['name:asc']"
+                                                     attribute="department"
+                                                     :limit="100">
+                                    <template slot-scope="{items, refine, isRefined, createURL}">
+                                        <transition-group class="ais-RefinementList-list"
+                                                          name="list-slide"
+                                                          tag="ul">
+                                            <li v-for="item in items"
+                                                :key="item.value"
+                                                class="list-slide-item"
+                                                :class="[
+                                                    'ais-RefinementList-item',
+                                                    item.isRefined && 'ais-RefinementList-item--selected',
+                                                ]">
+                                                <label class="ais-RefinementList-label">
+                                                    <input v-on:change.prevent="refine(item.value)"
+                                                           type="checkbox"
+                                                           class="ais-RefinementList-checkbox"
+                                                           :value="item.value" />
+                                                    <span class="ais-RefinementList-labelText">
+                                                        {{ item.label }}
+                                                        <span class="ais-RefinementList-count">{{ item.count }}</span>
+                                                    </span>
+                                                </label>
+                                            </li>
+                                        </transition-group>
+                                    </template>
+                                </ais-refinement-list>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="col-xl-8">
+                        <ais-hits>
+                            <template v-slot="{ items }">
+                                <ais-state-results>
+                                    <div slot-scope="{ nbHits, query }">
+                                        <template v-if="nbHits < 1">
+                                            <div class="alert alert-info"
+                                                 role="alert">
+                                                No results found
+                                                <span v-if="query">for <strong><q>{{ query }}</q></strong></span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </ais-state-results>
+
+                                <section class="people-cards row row-cols-1 row-cols-md-2">
+                                    <div class="col px-2 mb-3"
+                                         v-for="item in items"
+                                         :key="item.objectID">
+
+                                        <!-- Person Card -->
+                                        <figure class="card h-100 shadow-none border-sm border-secondary rounded-0">
+                                            <div class="card-body">
+                                                <em>{{ item.department }}</em>
+
+                                                <h4 class="text-dark text-uppercase">
+                                                    <a :href="'contact-us/?id=' + item.id">{{ item.fullName }}</a>
+                                                </h4>
+
+                                                <h5 class="text-dark">{{ item.title }}</h5>
+
+                                                <div class="d-flex flex-wrap text-primary">
+                                                    <a class="mr-3"
+                                                       :href="'tel:' + item.phone1"
+                                                       v-if="item.phone1">
+                                                        <i class="icon usn_ion-md-call before"
+                                                           aria-hidden="true"></i>
+                                                        {{ item.phone1 }}
+                                                    </a>
+
+                                                    <a class="mr-3"
+                                                       :href="'tel:' + item.phone2"
+                                                       v-if="item.phone2">
+                                                        <i class="icon usn_ion-md-call before"
+                                                           aria-hidden="true"></i>
+                                                        {{ item.phone2 }}
+                                                    </a>
+
+                                                    <span class="mr-3"
+                                                          v-if="item.fax">
+                                                        <i class="icon usn_ion-md-paper before"
+                                                           aria-hidden="true"></i>
+                                                        {{ item.fax }}
+                                                    </span>
+
+                                                    <a class="mr-3"
+                                                       :href="'contact-us/?id=' + item.id">
+                                                        <i class="icon usn_ion-md-mail before"
+                                                           aria-hidden="true"></i>
+                                                        Send Message
+                                                    </a>
+                                                </div>
+
+                                                <p class="mb-0">
+                                                    <ais-snippet attribute="jobDescription"
+                                                                 :hit="item" />
+                                                </p>
+                                            </div>
+                                        </figure>
+
+                                    </div>
+                                </section>
+                            </template>
+                        </ais-hits>
+
+                        <ais-pagination v-on:page-change="jumpToTopOfResults()"
+                                        :class-names="{
+                                                'ais-Pagination': 'mt-4',
+                                                'ais-Pagination-list': 'pagination',
+                                                'ais-Pagination-item': 'page-item',
+                                                'ais-Pagination-item--selected': 'active',
+                                                'ais-Pagination-item--disabled': 'disabled',
+                                                'ais-Pagination-link': 'page-link'
+                                            }" />
+                    </div>
+
+                </div>
+            </ais-instant-search>
+        </template>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-instantsearch@3.4.2/dist/vue-instantsearch.js"></script>
+
+    <script type="module">
+        const search = model => {
+            new Vue({
+                el: model.el,
+                data () {
+                    return {
+                        indexName: model.indexName,
+                        searchClient: algoliasearch(model.applicationId, model.apiKey),
+                        routing: {
+                            stateMapping: {
+                                stateToRoute (uiState) {
+                                    const indexUiState = uiState[model.indexName];
+                                    return {
+                                        query: indexUiState.query,
+                                        departments: indexUiState.refinementList && indexUiState.refinementList.department,
+                                        page: indexUiState.page,
+                                        sortBy: indexUiState.sortBy
+                                    };
+                                },
+                                routeToState (routeState) {
+                                    return {
+                                        [model.indexName]: {
+                                            query: routeState.query,
+                                            refinementList: {
+                                                department: routeState.departments
+                                            },
+                                            page: routeState.page,
+                                            sortBy: routeState.sortBy
+                                        }
+                                    };
+                                }
+                            }
+                        }
+                    };
+                },
+                methods: {
+                    refineSearch: debounce((refine, value) => {
+                        refine(value);
+                    }),
+                    jumpToTopOfResults () {
+                        document.querySelector(model.el).scrollIntoView();
+                    }
+                }
+            });
+        };
+
+        function debounce (func, timeout = 500) {
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    func.apply(this, args);
+                }, timeout);
+            };
+        }
+
+        search({
+            indexName: "Dev",
+            applicationId: "TF33T6IBBO",
+            apiKey: "2037cff51477da6bf5f52cbc7dda6737",
+            el: "#app"
+        });
+    </script>
+</body>
+
+</html>

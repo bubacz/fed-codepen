@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>FED Codepen</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div id="app"
+         class="container mt-5">
+        <template>
+            <ais-instant-search :search-client="searchClient"
+                                :index-name="indexName">
+
+                <ais-configure filters="brand: Apple" />
+
+                <section class="row align-items-end mb-4">
+                    <div class="col mb-3">
+                        <ais-search-box>
+                            <template v-slot="{ currentRefinement, isSearchStalled, refine }">
+                                <div class="input-group rounded">
+
+                                    <template v-if="isSearchStalled">
+                                        <span class="input-group-text">
+                                            <i class="spinner-border spinner-border-sm text-secondary"
+                                               role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </i>
+                                        </span>
+                                    </template>
+
+                                    <label class="sr-only"
+                                           for="searchbox-input">Search by Keyword</label>
+                                    <input id="searchbox-input"
+                                           class="form-control"
+                                           type="search"
+                                           v-on:input="refine"
+                                           :value="currentRefinement"
+                                           :disabled="isSearchStalled"
+                                           placeholder="Start typing to search..."
+                                           autocomplete="nope"
+                                           autocorrect="off"
+                                           autocapitalize="none"
+                                           spellcheck="false">
+
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary m-0 px-4"
+                                                type="button"
+                                                :disabled="isSearchStalled">
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                        </ais-search-box>
+                    </div>
+                </section>
+
+                <div class="row">
+                    <div class="col">
+                        <ais-hits>
+                            <template v-slot="{ items }">
+
+                                <section class="row row-cols-1 row-cols-md-2">
+                                    <div class="col px-2 mb-3"
+                                         v-for="item in items"
+                                         :key="item.objectID">
+
+                                        <div class="card h-100 shadow-none border-sm border-secondary rounded-0">
+                                            <div class="card-body">
+                                                <h4 class="text-dark text-uppercase">
+                                                    {{ item.name }}
+                                                </h4>
+
+                                                <p class="text-dark">
+                                                    {{ item.description }}
+                                                </p>
+
+                                                <p class="mb-0">
+                                                    {{ item.price }}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </section>
+                            </template>
+                        </ais-hits>
+                    </div>
+
+                </div>
+            </ais-instant-search>
+        </template>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-instantsearch@3.4.2/dist/vue-instantsearch.js"></script>
+
+    <script type="module">
+        new Vue({
+            el: "#app",
+            data () {
+                return {
+                    indexName: "primary",
+                    searchClient: algoliasearch("PM743CX3NW", "a9544363179d21806991288e6c8468d0")
+                };
+            }
+        });
+    </script>
+</body>
+
+</html>

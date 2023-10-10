@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FED Codepen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div id="global-search"
+        class="global-search search-container">
+        <template>
+            <ais-instant-search :search-client="searchClient"
+                :index-name="indexName"
+                :routing="routing">
+                <header class="search-header mb-5">
+                    <ais-search-box class="container">
+                        <template v-slot="{ currentRefinement, isSearchStalled, refine }">
+                            <div class="input-group rounded">
+
+                                <template v-if="isSearchStalled">
+                                    <span class="input-group-text">
+                                        <i class="spinner-border spinner-border-sm text-secondary"
+                                            role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </i>
+                                    </span>
+                                </template>
+
+                                <label class="sr-only"
+                                    for="globalSearchInput">Search NCLM</label>
+                                <input id="globalSearchInput"
+                                    class="form-control rounded-left"
+                                    type="search"
+                                    v-on:input="refineSearch(refine, $event.currentTarget.value)"
+                                    :value="currentRefinement"
+                                    :disabled="isSearchStalled"
+                                    placeholder="Search NCLM"
+                                    autocomplete="nope"
+                                    autocorrect="off"
+                                    autocapitalize="none"
+                                    spellcheck="false"
+                                    autofocus>
+
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary m-0 px-4"
+                                        type="button"
+                                        :disabled="isSearchStalled">
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </ais-search-box>
+                </header>
+
+                <div class="container">
+                    <div class="row d-xl-block d-none">
+                        <div class="col-xl-9 offset-xl-3">
+                            <nav class="nav category-filters"
+                                aria-label="Filter by Page Type">
+
+                                <ais-clear-refinements :included-attributes="['category']">
+                                    <template v-slot="{ canRefine, refine, createURL, items }">
+                                        <a href="#"
+                                            class="btn btn-outline-primary"
+                                            :class="!canRefine && 'active'"
+                                            v-on:click.prevent="refine"
+                                            :href="createURL()">
+                                            Everything
+                                        </a>
+                                    </template>
+                                </ais-clear-refinements>
+
+                                <ais-menu attribute="category"
+                                    :limit="100"
+                                    :sort-by="['name', 'count']">
+                                    <template slot-scope="{ items, canRefine, refine, createURL, currentRefinement }">
+
+                                        <template v-for="item in items">
+                                            <a :key="item.value"
+                                                class="btn btn-outline-primary text-capitalize"
+                                                :class="item.isRefined && 'active'"
+                                                v-on:click.prevent="refine(item.value)"
+                                                :data-category="item.value"
+                                                :href="createURL(item.value)">
+                                                {{ formatTopFilterLabel(item.label) }}
+                                                ({{ item.count }})
+                                            </a>
+                                        </template>
+                                    </template>
+                                </ais-menu>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <div id="mobile-filters" class="row d-xl-none">
+                        <div class="col-md-6 mb-4">
+                            <ais-menu-select attribute="pageCategories.lvl0"
+                                name="topic-filter-dropdown"
+                                :limit="100">
+                                <select id="topic-filter-dropdown"
+                                    class="topic-select custom-select rounded"
+                                    slot-scope="{ items, canRefine, refine }"
+                                    :disabled="!canRefine"
+                                    v-on:change="refine($event.currentTarget.value)">
+                                    <option value="">All Topics</option>
+                                    <template v-for="item in items">
+                                        <option :key="item.value"
+                                            :value="item.value"
+                                            :selected="item.isRefined">
+                                            {{ item.label }}
+                                        </option>
+                                    </template>
+                                </select>
+                            </ais-menu-select>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <ais-menu-select attribute="category"
+                                name="category-filter-dropdown"
+                                :limit="100">
+                                <select id="category-filter-dropdown"
+                                    class="category-select custom-select rounded text-capitalize"
+                                    slot-scope="{ items, canRefine, refine }"
+                                    :disabled="!canRefine"
+                                    v-on:change="refine($event.currentTarget.value)">
+                                    <option value="">All Categories</option>
+                                    <template v-for="item in items">
+                                        <option :key="item.value"
+                                            :value="item.value"
+                                            :selected="item.isRefined">
+                                            {{ formatTopFilterLabel(item.label) }}
+                                            ({{ item.count }})
+                                        </option>
+                                    </template>
+                                </select>
+                            </ais-menu-select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-3 d-xl-block d-none">
+                            <section class="search-filters mb-4">
+
+                                <!-- Subcategories -->
+                                <ais-panel :class-names="{ 'ais-Panel': 'panel-content-filters' }">
+                                    <ais-refinement-list :sort-by="['name:asc']"
+                                        attribute="pageCategories.lvl1"
+                                        :limit="100">
+                                        <template slot-scope="{items, refine, isRefined, createURL}">
+                                            <template v-for="item in items" :key="item.value">
+                                                {{ setContentFilters(item) }}
+                                            </template>
+
+                                            <template v-for="parentCategory in contentFilters">
+                                                <section class="accordion" :id="`accordionContentType${generateId(parentCategory)}`">
+                                                    <h5 :id="`headingContentType${generateId(parentCategory)}`"
+                                                        class="m-0">
+                                                        <button class="accordion-button"
+                                                            type="button"
+                                                            data-toggle="collapse"
+                                                            :data-target="`#collapseContentType${generateId(parentCategory)}`"
+                                                            aria-expanded="true"
+                                                            :aria-controls="`collapseContentType${generateId(parentCategory)}`">
+                                                            {{ parentCategory }}
+                                                        </button>
+                                                    </h5>
+
+                                                    <div :id="`collapseContentType${generateId(parentCategory)}`"
+                                                        class="collapse show"
+                                                        :aria-labelledby="`headingContentType${generateId(parentCategory)}`"
+                                                        :data-parent="`#accordionContentType${generateId(parentCategory)}`">
+
+                                                        <transition-group class="ais-RefinementList-list"
+                                                            name="list-slide"
+                                                            tag="ul">
+                                                            <li v-for="item in items"
+                                                                :key="item.value"
+                                                                class="list-slide-item"
+                                                                :class="[
+                                                                'ais-RefinementList-item',
+                                                                item.isRefined && 'ais-RefinementList-item--selected',
+                                                            ]"
+                                                                v-if="getParentLabel(item) === parentCategory">
+                                                                <label class="ais-RefinementList-label">
+                                                                    <input v-on:change.prevent="refine(item.value)"
+                                                                        type="checkbox"
+                                                                        class="ais-RefinementList-checkbox"
+                                                                        :value="item.value" />
+                                                                    <span class="ais-RefinementList-labelText">
+                                                                        {{ getChildLabel(item) }}
+                                                                        <span class="ais-RefinementList-count">
+                                                                            {{ item.count }}
+                                                                        </span>
+                                                                    </span>
+                                                                </label>
+                                                            </li>
+                                                        </transition-group>
+
+                                                    </div>
+                                                </section>
+                                            </template>
+                                        </template>
+                                    </ais-refinement-list>
+                                </ais-panel>
+
+                                <!-- Event Filters -->
+                                <ais-panel :class-names="{ 'ais-Panel': 'panel-event-filters' }">
+                                    <section class="accordion" id="accordionEventType">
+                                        <h5 id="headingEventType"
+                                            class="m-0">
+                                            <button class="accordion-button"
+                                                type="button"
+                                                data-toggle="collapse"
+                                                data-target="#collapseEventType"
+                                                aria-expanded="true"
+                                                aria-controls="collapseEventType">
+                                                Event Type
+                                            </button>
+                                        </h5>
+
+                                        <div id="collapseEventType"
+                                            class="collapse show"
+                                            aria-labelledby="headingEventType"
+                                            data-parent="#accordionEventType">
+                                            <ais-refinement-list :sort-by="['name:asc']"
+                                                attribute="eventType"
+                                                :limit="100">
+                                                <template slot-scope="{items, refine, isRefined, createURL}">
+                                                    <transition-group class="ais-RefinementList-list"
+                                                        name="list-slide"
+                                                        tag="ul">
+                                                        <li v-for="item in items"
+                                                            :key="item.value"
+                                                            class="list-slide-item"
+                                                            :class="[
+                                                            'ais-RefinementList-item',
+                                                            item.isRefined && 'ais-RefinementList-item--selected',
+                                                        ]">
+                                                            <label class="ais-RefinementList-label">
+                                                                <input v-on:change.prevent="refine(item.value)"
+                                                                    type="checkbox"
+                                                                    class="ais-RefinementList-checkbox"
+                                                                    :value="item.value" />
+                                                                <span class="ais-RefinementList-labelText">
+                                                                    {{ item.label }}
+                                                                    <span class="ais-RefinementList-count">{{ item.count }}</span>
+                                                                </span>
+                                                            </label>
+                                                        </li>
+                                                    </transition-group>
+                                                </template>
+                                            </ais-refinement-list>
+                                        </div>
+                                    </section>
+                                </ais-panel>
+
+                                <!-- Job Filters -->
+                                <ais-panel :class-names="{ 'ais-Panel': 'panel-job-filters' }">
+                                    <section class="accordion" id="accordionJobCategory">
+                                        <h5 id="headingJobCategory"
+                                            class="m-0">
+                                            <button class="accordion-button"
+                                                type="button"
+                                                data-toggle="collapse"
+                                                data-target="#collapseJobCategory"
+                                                aria-expanded="true"
+                                                aria-controls="collapseJobCategory">
+                                                Job Category
+                                            </button>
+                                        </h5>
+
+                                        <div id="collapseJobCategory"
+                                            class="collapse show"
+                                            aria-labelledby="headingJobCategory"
+                                            data-parent="#accordionJobCategory">
+                                            <ais-refinement-list :sort-by="['name:asc']"
+                                                attribute="jobCategory"
+                                                :limit="100">
+                                                <template slot-scope="{items, refine, isRefined, createURL}">
+                                                    <transition-group class="ais-RefinementList-list"
+                                                        name="list-slide"
+                                                        tag="ul">
+                                                        <li v-for="item in items"
+                                                            :key="item.value"
+                                                            class="list-slide-item"
+                                                            :class="[
+                                                            'ais-RefinementList-item',
+                                                            item.isRefined && 'ais-RefinementList-item--selected',
+                                                        ]">
+                                                            <label class="ais-RefinementList-label">
+                                                                <input v-on:change.prevent="refine(item.value)"
+                                                                    type="checkbox"
+                                                                    class="ais-RefinementList-checkbox"
+                                                                    :value="item.value" />
+                                                                <span class="ais-RefinementList-labelText">
+                                                                    {{ item.label }}
+                                                                    <span class="ais-RefinementList-count">{{ item.count }}</span>
+                                                                </span>
+                                                            </label>
+                                                        </li>
+                                                    </transition-group>
+                                                </template>
+                                            </ais-refinement-list>
+                                        </div>
+                                    </section>
+                                </ais-panel>
+
+                                <!-- People Filters -->
+                                <ais-panel :class-names="{ 'ais-Panel': 'panel-people-filters' }">
+                                    <section class="accordion" id="accordionDepartment">
+                                        <h5 id="headingDepartment"
+                                            class="m-0">
+                                            <button class="accordion-button"
+                                                type="button"
+                                                data-toggle="collapse"
+                                                data-target="#collapseDepartment"
+                                                aria-expanded="true"
+                                                aria-controls="collapseDepartment">
+                                                Department
+                                            </button>
+                                        </h5>
+
+                                        <div id="collapseDepartment"
+                                            class="collapse show"
+                                            aria-labelledby="headingDepartment"
+                                            data-parent="#accordionDepartment">
+                                            <ais-refinement-list :sort-by="['name:asc']"
+                                                attribute="department"
+                                                :limit="100">
+                                                <template slot-scope="{items, refine, isRefined, createURL}">
+                                                    <transition-group class="ais-RefinementList-list"
+                                                        name="list-slide"
+                                                        tag="ul">
+                                                        <li v-for="item in items"
+                                                            :key="item.value"
+                                                            class="list-slide-item"
+                                                            :class="[
+                                                            'ais-RefinementList-item',
+                                                            item.isRefined && 'ais-RefinementList-item--selected',
+                                                        ]">
+                                                            <label class="ais-RefinementList-label">
+                                                                <input v-on:change.prevent="refine(item.value)"
+                                                                    type="checkbox"
+                                                                    class="ais-RefinementList-checkbox"
+                                                                    :value="item.value" />
+                                                                <span class="ais-RefinementList-labelText">
+                                                                    {{ item.label }}
+                                                                    <span class="ais-RefinementList-count">{{ item.count }}</span>
+                                                                </span>
+                                                            </label>
+                                                        </li>
+                                                    </transition-group>
+                                                </template>
+                                            </ais-refinement-list>
+                                        </div>
+                                    </section>
+                                </ais-panel>
+
+                            </section>
+                        </div>
+
+                        <div class="col-xl-9">
+                            <section>
+                                <ais-hits>
+                                    <template v-slot="{ items }">
+                                        <section class="card">
+                                            <div class="card-body">
+                                                <h2 class="card-title">Results</h2>
+
+                                                <ais-state-results>
+                                                    <div slot-scope="{ nbHits, query }">
+                                                        <template v-if="nbHits < 1">
+                                                            <div class="alert alert-info"
+                                                                role="alert">
+                                                                No results found
+                                                                <span v-if="query">for <strong><q>{{ query }}</q></strong></span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </ais-state-results>
+
+                                                <ul class="list-group m-0">
+                                                    <li class="list-group-item border-0 px-0 mb-4"
+                                                        v-for="item in items"
+                                                        :key="item.objectID">
+
+                                                        <!-- Content Item -->
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <a :href="item.pageUrl">
+                                                                    <h6 class="m-0">
+                                                                        {{ item.pageTitle }}
+                                                                    </h6>
+                                                                </a>
+    
+                                                                <div class="d-block">
+                                                                    <span class="badge badge-primary">{{ item.category }}</span>
+                                                                </div>
+    
+                                                                <div class="hit-description" v-if="item.summary">
+                                                                    <div class="d-block">
+                                                                        <ais-snippet attribute="summary" :hit="item" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </section>
+                                    </template>
+                                </ais-hits>
+
+                                <ais-pagination v-on:page-change="jumpToTopOfResults()"
+                                    :class-names="{
+                                                            'ais-Pagination': 'mt-4',
+                                                            'ais-Pagination-list': 'pagination',
+                                                            'ais-Pagination-item': 'page-item',
+                                                            'ais-Pagination-item--selected': 'active',
+                                                            'ais-Pagination-item--disabled': 'disabled',
+                                                            'ais-Pagination-link': 'page-link'
+                                                        }" />
+                            </section>
+                        </div>
+
+                    </div>
+                </div>
+        </template>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-instantsearch@3.4.2/dist/vue-instantsearch.js"></script>
+
+    <script type="module">
+        var NCLM = NCLM || {};
+
+        NCLM.GlobalSearch = model => {
+            new Vue({
+                el: model.el,
+                data () {
+                    return {
+                        indexName: model.indexName,
+                        searchClient: algoliasearch(model.applicationId, model.apiKey),
+                        routing: {
+                            stateMapping: {
+                                stateToRoute (uiState) {
+                                    const indexUiState = uiState[model.indexName];
+                                    return {
+                                        query: indexUiState.query,
+                                        category: indexUiState.menu && indexUiState.menu.category,
+                                        pageCategories: indexUiState.refinementList && indexUiState.refinementList["pageCategories.lvl1"],
+                                        eventTypes: indexUiState.refinementList && indexUiState.refinementList.eventType,
+                                        jobCategories: indexUiState.refinementList && indexUiState.refinementList.jobCategory,
+                                        departments: indexUiState.refinementList && indexUiState.refinementList.department,
+                                        page: indexUiState.page
+                                    };
+                                },
+                                routeToState (routeState) {
+                                    return {
+                                        [model.indexName]: {
+                                            query: routeState.query,
+                                            menu: {
+                                                category: routeState.category
+                                            },
+                                            refinementList: {
+                                                ["pageCategories.lvl1"]: routeState.pageCategories,
+                                                eventType: routeState.eventTypes,
+                                                jobCategory: routeState.jobCategories,
+                                                department: routeState.departments
+                                            },
+                                            page: routeState.page
+                                        }
+                                    };
+                                }
+                            }
+                        },
+                        contentFilters: []
+                    };
+                },
+                methods: {
+                    refineSearch: debounce((refine, value) => {
+                        refine(value);
+                    }),
+                    formatTopFilterLabel (label) {
+                        if (label.toLowerCase() === "event") return "Events";
+                        if (label.toLowerCase() === "job") return "Jobs";
+                        if (label.toLowerCase() === "affiliatemember") return "Affiliates";
+                        if (label.toLowerCase() === "associatemember") return "Associates";
+                        if (label.toLowerCase() === "municipality") return "Municipalities";
+                        return label;
+                    },
+                    jumpToTopOfResults () {
+                        document.querySelector(model.el).scrollIntoView();
+                    },
+                    getParentLabel (item) {
+                        return item.label.split(">")[0].trim();
+                    },
+                    getChildLabel (item) {
+                        return item.label.split(">")[1].trim();
+                    },
+                    setContentFilters (item) {
+                        const category = this.getParentLabel(item);
+
+                        if (!this.contentFilters.includes(category)) {
+                            this.contentFilters.push(category);
+                        }
+                    },
+                    generateId (category) {
+                        return `${ category.trim().split(" ").join("") }`;
+                    }
+                }
+            });
+        };
+
+        function debounce (func, timeout = 500) {
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    func.apply(this, args);
+                }, timeout);
+            };
+        }
+
+        NCLM.GlobalSearch({
+            indexName: "Dev",
+            applicationId: "TF33T6IBBO",
+            apiKey: "2037cff51477da6bf5f52cbc7dda6737",
+            el: "#global-search"
+        });
+
+    </script>
+</body>
+
+</html>

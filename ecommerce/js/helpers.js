@@ -23,3 +23,13 @@ export function buildProductVariantLinkUrl(sku, manufacturerName, variantID) {
 	// TODO: Figure out how to actually build this URL. This is currently just a placeholder for that doesn't work.
 	return `/${sku}-vp-${toKebabCase(manufacturerName)}-${variantID}.aspx`;
 }
+
+export function debounce(func, timeout = 500) {
+	let timer;
+	return (...args) => {
+		clearTimeout(timer);
+		timer = setTimeout(() => {
+			func.apply(this, args);
+		}, timeout);
+	};
+}

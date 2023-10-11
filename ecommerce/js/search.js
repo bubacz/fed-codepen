@@ -1,12 +1,54 @@
 import * as helpers from "./helpers.js";
 
+const algoliaClient = algoliasearch("3VY17DELF4", "455080cdf8c3e2f23fd7d106fac363c7");
+const searchClient = {
+	...algoliaClient,
+	search (requests) {
+		// Detect empty search requests to prevent search request on every page load
+		if (requests.every(({ params }) => !params.query)) {
+			return Promise.resolve({
+				results: requests.map(() => ({
+					hits: [],
+					nbHits: 0,
+					nbPages: 0,
+					page: 0,
+					processingTimeMS: 0,
+					hitsPerPage: 0,
+					exhaustiveNbHits: false,
+					query: "",
+					params: ""
+				}))
+			});
+		}
+
+		return algoliaClient.search(requests);
+	}
+};
+
 new Vue({
 	el: "#search-app",
 	data() {
 		return {
 			indexName: "Production",
-			searchClient: algoliasearch("3VY17DELF4", "455080cdf8c3e2f23fd7d106fac363c7"),
-			maxRating: 5
+			searchClient,
+			maxRating: 5,
+			routing: {
+				stateMapping: {
+					stateToRoute(uiState) {
+						const indexUiState = uiState["Production"];
+						return {
+							query: indexUiState.query
+						};
+					},
+					routeToState(routeState) {
+						return {
+							["Production"]: {
+								query: routeState.query
+							}
+						};
+					}
+				}
+			}
 		};
 	},
 	created() {
@@ -30,6 +72,13 @@ new Vue({
 		this.header = document.querySelector("#header");
 	},
 	methods: {
+		refineSearch: helpers.debounce((refine, value) => {
+			// Wait to search until after the user has stopped typing for 500ms
+			refine(value);
+		}),
+		goToSearchPage (query) {
+			location.href = "?query=" + query;
+		},
 		formatCurrency(value) {
 			return new Intl.NumberFormat("en-CA", {
 				style: "currency",

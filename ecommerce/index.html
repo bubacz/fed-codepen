@@ -22,47 +22,52 @@
       <ais-instant-search
         :search-client="searchClient"
         :index-name="indexName"
+        :routing="routing"
       >
-
-        <header
-          class="header"
-          id="header"
-        >
-          <ais-search-box placeholder="Product, brand, color, �">
-            <template #submit-icon>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 18 18"
-                width="16"
-                height="16"
+  
+        <ais-search-box class="container-main">
+          <template v-slot="{ currentRefinement, isSearchStalled, refine }">
+            <div class="input-group rounded">
+  
+              <template v-if="isSearchStalled">
+                <span class="input-group-text">
+                  <i
+                    class="spinner-border spinner-border-sm text-secondary"
+                    role="status"
+                  >
+                    <span class="sr-only">Loading...</span>
+                  </i>
+                </span>
+              </template>
+  
+              <label
+                class="sr-only"
+                for="globalSearchInput"
+              >Search NCLM</label>
+              <input
+                id="globalSearchInput"
+                class="search-input form-control form-control-lg"
+                type="search"
+                v-on:input="refineSearch(refine, $event.currentTarget.value)"
+                :value="currentRefinement"
+                :disabled="isSearchStalled"
+                placeholder="Type to search..."
+                autocomplete="nope"
+                autocorrect="off"
+                autocapitalize="none"
+                spellcheck="false"
+                autofocus
               >
-                <g
-                  fill="none"
-                  fill-rule="evenodd"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.67"
-                  transform="translate(1 1)"
-                >
-                  <circle
-                    cx="7.11"
-                    cy="7.11"
-                    r="7.11"
-                  />
-                  <path d="M16 16l-3.87-3.87" />
-                </g>
-              </svg>
-            </template>
-          </ais-search-box>
-        </header>
-
+            </div>
+          </template>
+        </ais-search-box>
+  
         <main class="container-main">
           <div class="container-wrapper">
             <section class="container-filters">
               <div class="container-header">
                 <h2>Filters</h2>
-
+  
                 <ais-clear-refinements data-layout="desktop">
                   <template #resetLabel>
                     <div class="clear-filters">
@@ -89,40 +94,40 @@
                     </div>
                   </template>
                 </ais-clear-refinements>
-
+  
                 <ais-stats data-layout="mobile">
                   <template #default="{ nbHits }">
                     <span class="ais-Stats-text">
-                      <strong>{{ formatNumber(nbHits) }}</strong> results
+                      <strong>{{ formatCurrency(nbHits) }}</strong> results
                     </span>
                   </template>
                 </ais-stats>
               </div>
-
+  
               <div class="container-body">
                 <ais-panel>
                   <template #header>
                     Category
                   </template>
-
+  
                   <template #default>
                     <ais-hierarchical-menu
                       :sort-by="['name', 'count']"
                       :attributes="[
-                                    'categories.lvl0',
-                                    'categories.lvl1',
-                                    'categories.lvl2',
-                                    'categories.lvl3',
-                                  ]"
+                                      'categories.lvl0',
+                                      'categories.lvl1',
+                                      'categories.lvl2',
+                                      'categories.lvl3',
+                                    ]"
                     />
                   </template>
                 </ais-panel>
-
+  
                 <ais-panel>
                   <template #header>
                     Brands
                   </template>
-
+  
                   <template #default>
                     <ais-refinement-list
                       attribute="manufacturerName"
@@ -131,12 +136,12 @@
                     />
                   </template>
                 </ais-panel>
-
+  
                 <ais-panel>
                   <template #header>
                     Price
                   </template>
-
+  
                   <template #default>
                     <ais-range-input attribute="price">
                       <template #default="{ currentRefinement, range, refine, canRefine }">
@@ -164,19 +169,19 @@
                             />
                           </template>
                           <template #tooltip="{ value }">
-                            {{ formatNumber(value) }}
+                            {{ formatCurrency(value) }}
                           </template>
                         </vue-slider>
                       </template>
                     </ais-range-input>
                   </template>
                 </ais-panel>
-
+  
                 <ais-panel>
                   <template #header>
                     Free shipping
                   </template>
-
+  
                   <template #default>
                     <ais-toggle-refinement
                       attribute="free_shipping"
@@ -184,24 +189,24 @@
                     />
                   </template>
                 </ais-panel>
-
+  
                 <ais-panel>
                   <template #header>
                     Ratings
                   </template>
-
+  
                   <template #default>
                     <ais-rating-menu attribute="rating">
                       <template #default="{ items, refine, createURL }">
                         <ul class="ais-RatingMenu-list">
                           <li
                             :class="{
-                            'ais-RatingMenu-item' : true,
-                            'ais-RatingMenu-item--selected' :
-                            items.every((item)=>
-                            !item.isRefined) ||
-                            item.isRefined,
-                            }"
+                              'ais-RatingMenu-item' : true,
+                              'ais-RatingMenu-item--selected' :
+                              items.every((item)=>
+                              !item.isRefined) ||
+                              item.isRefined,
+                              }"
                             v-for="item in items"
                             :key="item.value"
                           >
@@ -217,10 +222,10 @@
                               >
                                 <svg
                                   :class="{
-                                                'ais-RatingMenu-starIcon': true,
-                                                'ais-RatingMenu-starIcon--full': full,
-                                                'ais-RatingMenu-starIcon--empty': !full,
-                                              }"
+                                                  'ais-RatingMenu-starIcon': true,
+                                                  'ais-RatingMenu-starIcon--full': full,
+                                                  'ais-RatingMenu-starIcon--empty': !full,
+                                                }"
                                   aria-hidden="true"
                                   viewBox="0 0 16 16"
                                 >
@@ -230,11 +235,11 @@
                                   />
                                 </svg>
                               </span>
-
+  
                               <span class="ais-RatingMenu-count">
                                 {{
-                                            item.count
-                                }}
+                                              item.count
+                                  }}
                               </span>
                             </a>
                           </li>
@@ -245,7 +250,7 @@
                 </ais-panel>
               </div>
             </section>
-
+  
             <footer
               class="container-filters-footer"
               data-layout="mobile"
@@ -254,58 +259,58 @@
                 class="container-filters-footer-button-wrapper"
                 v-on:click="closeFilters"
               />
-
+  
               <ais-stats class="container-filters-footer-button-wrapper">
                 <template #default="{ nbHits }">
                   <button
                     class="button button-primary"
                     v-on:click="closeFilters"
                   >
-                    See {{ formatNumber(nbHits) }} results
+                    See {{ formatCurrency(nbHits) }} results
                   </button>
                 </template>
               </ais-stats>
             </footer>
           </div>
-
+  
           <section class="container-results">
             <header class="container-header container-options">
               <div class="col-auto">
                 <ais-sort-by
                   class="container-option"
                   :items="[
-                                  { value: 'primary', label: 'Featured' },
-                                  { value: 'primary_price_asc', label: 'Price ascending' },
-                                  {
-                                    value: 'primary_price_desc',
-                                    label: 'Price descending',
-                                  },
-                                ]"
+                                    { value: 'primary', label: 'Featured' },
+                                    { value: 'primary_price_asc', label: 'Price ascending' },
+                                    {
+                                      value: 'primary_price_desc',
+                                      label: 'Price descending',
+                                    },
+                                  ]"
                 />
               </div>
-
+  
               <div class="col-auto">
                 <ais-hits-per-page
                   class="container-option"
                   :items="[
-                                  {
-                                    label: '16 hits per page',
-                                    value: 16,
-                                    default: true,
-                                  },
-                                  {
-                                    label: '32 hits per page',
-                                    value: 32,
-                                  },
-                                  {
-                                    label: '64 hits per page',
-                                    value: 64,
-                                  },
-                                ]"
+                                    {
+                                      label: '16 hits per page',
+                                      value: 16,
+                                      default: true,
+                                    },
+                                    {
+                                      label: '32 hits per page',
+                                      value: 32,
+                                    },
+                                    {
+                                      label: '64 hits per page',
+                                      value: 64,
+                                    },
+                                  ]"
                 />
               </div>
             </header>
-
+  
             <ais-hits>
               <template #item="{ item }">
                 <div class="hit">
@@ -316,26 +321,26 @@
                       class="hit-image"
                     />
                   </figure>
-
+  
                   <div class="hit-info-container">
                     <p class="hit-category">
                       {{ item.categories[0] }}
                     </p>
-
+  
                     <h1>
                       <ais-highlight
                         attribute="productName"
                         :hit="item"
                       />
                     </h1>
-
+  
                     <p class="hit-description">
                       <ais-snippet
                         attribute="description"
                         :hit="item"
                       />
                     </p>
-
+  
                     <div class="hit-rating mb-3">
                       <template v-for="i in maxRating">
                         <svg
@@ -350,7 +355,7 @@
                         </svg>
                       </template>
                     </div>
-
+  
                     <p class="d-flex align-items-center">
                       <template v-if="item.salePrice < item.price">
                         <span>From: <s>{{ formatCurrency(item.price) }}</s></span>
@@ -361,7 +366,7 @@
                         <span>From: {{ formatCurrency(item.price) }}</span>
                       </template>
                     </p>
-
+  
                     <a
                       class="btn btn-outline-secondary text-uppercase d-block rounded-0"
                       :href="getProductLinkUrl(item)"
@@ -375,19 +380,19 @@
                 </div>
               </template>
             </ais-hits>
-
+  
             <no-results />
-
+  
             <footer class="container-footer">
               <ais-pagination :padding="2">
                 <template #default="{
-                                currentRefinement,
-                                pages,
-                                isFirstPage,
-                                isLastPage,
-                                refine,
-                                createURL,
-                              }">
+                                  currentRefinement,
+                                  pages,
+                                  isFirstPage,
+                                  isLastPage,
+                                  refine,
+                                  createURL,
+                                }">
                   <ul class="ais-Pagination-list">
                     <li
                       class="ais-Pagination-item ais-Pagination-item--previousPage ais-Pagination-item--disabled"
@@ -413,7 +418,7 @@
                         </svg>
                       </span>
                     </li>
-
+  
                     <li
                       class="ais-Pagination-item ais-Pagination-item--previousPage"
                       v-if="!isFirstPage"
@@ -443,14 +448,14 @@
                         </svg>
                       </a>
                     </li>
-
+  
                     <li
                       :class="{
-                                    'ais-Pagination-item': true,
-                                    'ais-Pagination-item--page': true,
-                                    'ais-Pagination-item--selected':
-                                      page === currentRefinement,
-                                  }"
+                                      'ais-Pagination-item': true,
+                                      'ais-Pagination-item--page': true,
+                                      'ais-Pagination-item--selected':
+                                        page === currentRefinement,
+                                    }"
                       v-for="page in pages"
                       :key="page"
                     >
@@ -458,12 +463,12 @@
                         class="ais-Pagination-link"
                         :href="createURL(page)"
                         :style="{
-                                      fontWeight: page === currentRefinement ? 'bold' : '',
-                                    }"
+                                        fontWeight: page === currentRefinement ? 'bold' : '',
+                                      }"
                         v-on:click.prevent="refine(page)"
                       >{{ page + 1 }}</a>
                     </li>
-
+  
                     <li
                       class="ais-Pagination-item ais-Pagination-item--nextPage"
                       v-if="!isLastPage"
@@ -493,7 +498,7 @@
                         </svg>
                       </a>
                     </li>
-
+  
                     <li
                       class="ais-Pagination-item ais-Pagination-item--nextPage ais-Pagination-item--disabled"
                       v-if="isLastPage"
@@ -524,7 +529,7 @@
             </footer>
           </section>
         </main>
-
+  
         <aside data-layout="mobile">
           <button
             class="filters-button"
@@ -544,14 +549,15 @@
                 stroke-linejoin="round"
               />
             </svg>
-
+  
             Filters
           </button>
         </aside>
-
+  
       </ais-instant-search>
     </template>
   </div>
+  
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>

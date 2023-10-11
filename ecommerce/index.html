@@ -2,73 +2,94 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parts Engine Search</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parts Engine Search</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/reset.css" />
-    <link rel="stylesheet" href="css/App.css" />
-    <link rel="stylesheet" href="css/App.mobile.css" />
-    <link rel="stylesheet" href="css/Theme.css" />
-    <link rel="stylesheet" href="css/PriceSlider.css" />
-    
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/App.css" />
+  <link rel="stylesheet" href="css/App.mobile.css" />
+  <link rel="stylesheet" href="css/Theme.css" />
+  <link rel="stylesheet" href="css/PriceSlider.css" />
 </head>
 
 <body>
 
   <div id="search-app">
     <template>
-      <ais-instant-search :search-client="searchClient" :index-name="indexName">
-  
-        <header class="header" id="header">
+      <ais-instant-search
+        :search-client="searchClient"
+        :index-name="indexName"
+      >
+
+        <header
+          class="header"
+          id="header"
+        >
           <ais-search-box placeholder="Product, brand, color, �">
             <template #submit-icon>
-              <svg xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 18 18"
-                 width="16"
-                 height="16">
-                <g fill="none"
-                   fill-rule="evenodd"
-                   stroke="currentColor"
-                   stroke-linecap="round"
-                   stroke-linejoin="round"
-                   stroke-width="1.67"
-                   transform="translate(1 1)">
-                  <circle cx="7.11" cy="7.11" r="7.11" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 18 18"
+                width="16"
+                height="16"
+              >
+                <g
+                  fill="none"
+                  fill-rule="evenodd"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.67"
+                  transform="translate(1 1)"
+                >
+                  <circle
+                    cx="7.11"
+                    cy="7.11"
+                    r="7.11"
+                  />
                   <path d="M16 16l-3.87-3.87" />
                 </g>
               </svg>
             </template>
           </ais-search-box>
         </header>
-  
+
         <main class="container-main">
           <div class="container-wrapper">
             <section class="container-filters">
               <div class="container-header">
                 <h2>Filters</h2>
-  
+
                 <ais-clear-refinements data-layout="desktop">
                   <template #resetLabel>
                     <div class="clear-filters">
-                      <svg xmlns="http://www.w3.org/2000/svg"
-                         width="10"
-                         height="10"
-                         viewBox="0 0 11 11">
-                        <g fill="none" fill-rule="evenodd" opacity=".4">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="10"
+                        height="10"
+                        viewBox="0 0 11 11"
+                      >
+                        <g
+                          fill="none"
+                          fill-rule="evenodd"
+                          opacity=".4"
+                        >
                           <path d="M0 0h11v11H0z" />
-                          <path fill="#000"
-                              fill-rule="nonzero"
-                              d="M8.26 2.75a3.896 3.896 0 1 0 1.102 3.262l.007-.056a.49.49 0 0 1 .485-.456c.253 0 .451.206.437.457 0 0 .012-.109-.006.061a4.813 4.813 0 1 1-1.348-3.887v-.987a.458.458 0 1 1 .917.002v2.062a.459.459 0 0 1-.459.459H7.334a.458.458 0 1 1-.002-.917h.928z" />
+                          <path
+                            fill="#000"
+                            fill-rule="nonzero"
+                            d="M8.26 2.75a3.896 3.896 0 1 0 1.102 3.262l.007-.056a.49.49 0 0 1 .485-.456c.253 0 .451.206.437.457 0 0 .012-.109-.006.061a4.813 4.813 0 1 1-1.348-3.887v-.987a.458.458 0 1 1 .917.002v2.062a.459.459 0 0 1-.459.459H7.334a.458.458 0 1 1-.002-.917h.928z"
+                          />
                         </g>
                       </svg>
                       Clear filters
                     </div>
                   </template>
                 </ais-clear-refinements>
-  
+
                 <ais-stats data-layout="mobile">
                   <template #default="{ nbHits }">
                     <span class="ais-Stats-text">
@@ -77,62 +98,70 @@
                   </template>
                 </ais-stats>
               </div>
-  
+
               <div class="container-body">
                 <ais-panel>
                   <template #header>
                     Category
                   </template>
-  
+
                   <template #default>
-                    <ais-hierarchical-menu :sort-by="['name', 'count']"
-                                 :attributes="[
+                    <ais-hierarchical-menu
+                      :sort-by="['name', 'count']"
+                      :attributes="[
                                     'categories.lvl0',
                                     'categories.lvl1',
                                     'categories.lvl2',
                                     'categories.lvl3',
-                                  ]" />
+                                  ]"
+                    />
                   </template>
                 </ais-panel>
-  
+
                 <ais-panel>
                   <template #header>
                     Brands
                   </template>
-  
+
                   <template #default>
-                    <ais-refinement-list attribute="manufacturerName"
-                               searchable
-                               searchable-placeholder="Search for brands..." />
+                    <ais-refinement-list
+                      attribute="manufacturerName"
+                      searchable
+                      searchable-placeholder="Search for brands..."
+                    />
                   </template>
                 </ais-panel>
-  
+
                 <ais-panel>
                   <template #header>
                     Price
                   </template>
-  
+
                   <template #default>
                     <ais-range-input attribute="price">
                       <template #default="{ currentRefinement, range, refine, canRefine }">
-                        <vue-slider :min="range.min"
-                              :max="range.max"
-                              :value="toValue(currentRefinement, range)"
-                              :disabled="!canRefine"
-                              :lazy="true"
-                              :use-keyboard="true"
-                              :enable-cross="false"
-                              tooltip="always"
-                              :duration="0"
-                              v-on:change="refine({ min: $event[0], max: $event[1] })">
+                        <vue-slider
+                          :min="range.min"
+                          :max="range.max"
+                          :value="toValue(currentRefinement, range)"
+                          :disabled="!canRefine"
+                          :lazy="true"
+                          :use-keyboard="true"
+                          :enable-cross="false"
+                          tooltip="always"
+                          :duration="0"
+                          v-on:change="refine({ min: $event[0], max: $event[1] })"
+                        >
                           <template #dot="{ index, value }">
-                            <div :aria-valuemin="range.min"
-                               :aria-valuemax="range.max"
-                               :aria-valuenow="value"
-                               :data-handle-key="index"
-                               class="vue-slider-dot-handle"
-                               role="slider"
-                               tabindex="0" />
+                            <div
+                              :aria-valuemin="range.min"
+                              :aria-valuemax="range.max"
+                              :aria-valuenow="value"
+                              :data-handle-key="index"
+                              class="vue-slider-dot-handle"
+                              role="slider"
+                              tabindex="0"
+                            />
                           </template>
                           <template #tooltip="{ value }">
                             {{ formatNumber(value) }}
@@ -142,28 +171,31 @@
                     </ais-range-input>
                   </template>
                 </ais-panel>
-  
+
                 <ais-panel>
                   <template #header>
                     Free shipping
                   </template>
-  
+
                   <template #default>
-                    <ais-toggle-refinement attribute="free_shipping"
-                                 label="Display only items with free shipping" />
+                    <ais-toggle-refinement
+                      attribute="free_shipping"
+                      label="Display only items with free shipping"
+                    />
                   </template>
                 </ais-panel>
-  
+
                 <ais-panel>
                   <template #header>
                     Ratings
                   </template>
-  
+
                   <template #default>
                     <ais-rating-menu attribute="rating">
                       <template #default="{ items, refine, createURL }">
                         <ul class="ais-RatingMenu-list">
-                          <li :class="{
+                          <li
+                            :class="{
                             'ais-RatingMenu-item' : true,
                             'ais-RatingMenu-item--selected' :
                             items.every((item)=>
@@ -172,25 +204,33 @@
                             }"
                             v-for="item in items"
                             :key="item.value"
+                          >
+                            <a
+                              class="ais-RatingMenu-link"
+                              :aria-label="item.value + ' & up'"
+                              :href="createURL(item.value)"
+                              v-on:click.prevent="refine(item.value)"
                             >
-                            <a class="ais-RatingMenu-link"
-                               :aria-label="item.value + ' & up'"
-                               :href="createURL(item.value)"
-                               v-on:click.prevent="refine(item.value)">
-                              <span v-for="(full, index) in item.stars"
-                                  :key="index">
-                                <svg :class="{
+                              <span
+                                v-for="(full, index) in item.stars"
+                                :key="index"
+                              >
+                                <svg
+                                  :class="{
                                                 'ais-RatingMenu-starIcon': true,
                                                 'ais-RatingMenu-starIcon--full': full,
                                                 'ais-RatingMenu-starIcon--empty': !full,
                                               }"
-                                   aria-hidden="true"
-                                   viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd"
-                                      d="M10.472 5.008L16 5.816l-4 3.896.944 5.504L8 12.616l-4.944 2.6L4 9.712 0 5.816l5.528-.808L8 0z" />
+                                  aria-hidden="true"
+                                  viewBox="0 0 16 16"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    d="M10.472 5.008L16 5.816l-4 3.896.944 5.504L8 12.616l-4.944 2.6L4 9.712 0 5.816l5.528-.808L8 0z"
+                                  />
                                 </svg>
                               </span>
-  
+
                               <span class="ais-RatingMenu-count">
                                 {{
                                             item.count
@@ -205,38 +245,49 @@
                 </ais-panel>
               </div>
             </section>
-  
-            <footer class="container-filters-footer" data-layout="mobile">
-              <clear-refinements class="container-filters-footer-button-wrapper"
-                         v-on:click="closeFilters" />
-  
+
+            <footer
+              class="container-filters-footer"
+              data-layout="mobile"
+            >
+              <clear-refinements
+                class="container-filters-footer-button-wrapper"
+                v-on:click="closeFilters"
+              />
+
               <ais-stats class="container-filters-footer-button-wrapper">
                 <template #default="{ nbHits }">
-                  <button class="button button-primary" v-on:click="closeFilters">
+                  <button
+                    class="button button-primary"
+                    v-on:click="closeFilters"
+                  >
                     See {{ formatNumber(nbHits) }} results
                   </button>
                 </template>
               </ais-stats>
             </footer>
           </div>
-  
+
           <section class="container-results">
             <header class="container-header container-options">
               <div class="col-auto">
-                <ais-sort-by class="container-option"
-                       :items="[
+                <ais-sort-by
+                  class="container-option"
+                  :items="[
                                   { value: 'primary', label: 'Featured' },
                                   { value: 'primary_price_asc', label: 'Price ascending' },
                                   {
                                     value: 'primary_price_desc',
                                     label: 'Price descending',
                                   },
-                                ]" />
+                                ]"
+                />
               </div>
-  
+
               <div class="col-auto">
-                <ais-hits-per-page class="container-option"
-                           :items="[
+                <ais-hits-per-page
+                  class="container-option"
+                  :items="[
                                   {
                                     label: '16 hits per page',
                                     value: 16,
@@ -250,33 +301,53 @@
                                     label: '64 hits per page',
                                     value: 64,
                                   },
-                                ]" />
+                                ]"
+                />
               </div>
             </header>
-  
+
             <ais-hits>
               <template #item="{ item }">
                 <div class="hit">
                   <figure class="hit-image-container">
-                    <img :src="getProductImageSrc(item)" :alt="item.productName" class="hit-image" />
+                    <img
+                      :src="getProductImageSrc(item)"
+                      :alt="item.productName"
+                      class="hit-image"
+                    />
                   </figure>
-  
+
                   <div class="hit-info-container">
                     <p class="hit-category">
                       {{ item.categories[0] }}
                     </p>
 
                     <h1>
-                      <ais-highlight attribute="productName" :hit="item" />
+                      <ais-highlight
+                        attribute="productName"
+                        :hit="item"
+                      />
                     </h1>
 
                     <p class="hit-description">
-                      <ais-snippet attribute="description" :hit="item" />
+                      <ais-snippet
+                        attribute="description"
+                        :hit="item"
+                      />
                     </p>
 
                     <div class="hit-rating mb-3">
                       <template v-for="i in maxRating">
-                        <svg :fill="i <= item.rating ? '#faa100' : '#eee'" xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 384 512"><path d="M153.6 29.9l16-21.3C173.6 3.2 180 0 186.7 0C198.4 0 208 9.6 208 21.3V43.5c0 13.1 5.4 25.7 14.9 34.7L307.6 159C356.4 205.6 384 270.2 384 337.7C384 434 306 512 209.7 512H192C86 512 0 426 0 320v-3.8c0-48.8 19.4-95.6 53.9-130.1l3.5-3.5c4.2-4.2 10-6.6 16-6.6C85.9 176 96 186.1 96 198.6V288c0 35.3 28.7 64 64 64s64-28.7 64-64v-3.9c0-18-7.2-35.3-19.9-48l-38.6-38.6c-24-24-37.5-56.7-37.5-90.7c0-27.7 9-54.8 25.6-76.9z"/></svg>
+                        <svg
+                          :fill="i <= item.rating ? '#faa100' : '#eee'"
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="1.5em"
+                          viewBox="0 0 384 512"
+                        >
+                          <path
+                            d="M153.6 29.9l16-21.3C173.6 3.2 180 0 186.7 0C198.4 0 208 9.6 208 21.3V43.5c0 13.1 5.4 25.7 14.9 34.7L307.6 159C356.4 205.6 384 270.2 384 337.7C384 434 306 512 209.7 512H192C86 512 0 426 0 320v-3.8c0-48.8 19.4-95.6 53.9-130.1l3.5-3.5c4.2-4.2 10-6.6 16-6.6C85.9 176 96 186.1 96 198.6V288c0 35.3 28.7 64 64 64s64-28.7 64-64v-3.9c0-18-7.2-35.3-19.9-48l-38.6-38.6c-24-24-37.5-56.7-37.5-90.7c0-27.7 9-54.8 25.6-76.9z"
+                          />
+                        </svg>
                       </template>
                     </div>
 
@@ -291,16 +362,22 @@
                       </template>
                     </p>
 
-                    <a class="btn btn-outline-secondary text-uppercase d-block rounded-0" :href="getProductLinkUrl(item)">
-                      <i class="fa fa-sign-out mr-1" aria-hidden="true"></i> See Details
+                    <a
+                      class="btn btn-outline-secondary text-uppercase d-block rounded-0"
+                      :href="getProductLinkUrl(item)"
+                    >
+                      <i
+                        class="fa fa-sign-out mr-1"
+                        aria-hidden="true"
+                      ></i> See Details
                     </a>
                   </div>
                 </div>
               </template>
             </ais-hits>
-  
+
             <no-results />
-  
+
             <footer class="container-footer">
               <ais-pagination :padding="2">
                 <template #default="{
@@ -312,98 +389,130 @@
                                 createURL,
                               }">
                   <ul class="ais-Pagination-list">
-                    <li class="ais-Pagination-item ais-Pagination-item--previousPage ais-Pagination-item--disabled"
-                      v-if="isFirstPage">
+                    <li
+                      class="ais-Pagination-item ais-Pagination-item--previousPage ais-Pagination-item--disabled"
+                      v-if="isFirstPage"
+                    >
                       <span class="ais-Pagination-link">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                           viewBox="0 0 10 10"
-                           width="10"
-                           height="10">
-                          <g fill="none"
-                             fill-rule="evenodd"
-                             stroke="#000"
-                             stroke-linecap="round"
-                             stroke-linejoin="round"
-                             stroke-width="1.143">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 10 10"
+                          width="10"
+                          height="10"
+                        >
+                          <g
+                            fill="none"
+                            fill-rule="evenodd"
+                            stroke="#000"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.143"
+                          >
                             <path d="M9 5H1M5 9L1 5l4-4" />
                           </g>
                         </svg>
                       </span>
                     </li>
-  
-                    <li class="ais-Pagination-item ais-Pagination-item--previousPage"
-                      v-if="!isFirstPage">
-                      <a class="ais-Pagination-link"
-                         :href="createURL(currentRefinement - 1)"
-                         v-on:click.prevent="refine(currentRefinement - 1)"
-                         aria-label="Previous">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                           viewBox="0 0 10 10"
-                           width="10"
-                           height="10">
-                          <g fill="none"
-                             fill-rule="evenodd"
-                             stroke="#000"
-                             stroke-linecap="round"
-                             stroke-linejoin="round"
-                             stroke-width="1.143">
+
+                    <li
+                      class="ais-Pagination-item ais-Pagination-item--previousPage"
+                      v-if="!isFirstPage"
+                    >
+                      <a
+                        class="ais-Pagination-link"
+                        :href="createURL(currentRefinement - 1)"
+                        v-on:click.prevent="refine(currentRefinement - 1)"
+                        aria-label="Previous"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 10 10"
+                          width="10"
+                          height="10"
+                        >
+                          <g
+                            fill="none"
+                            fill-rule="evenodd"
+                            stroke="#000"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.143"
+                          >
                             <path d="M9 5H1M5 9L1 5l4-4" />
                           </g>
                         </svg>
                       </a>
                     </li>
-  
-                    <li :class="{
+
+                    <li
+                      :class="{
                                     'ais-Pagination-item': true,
                                     'ais-Pagination-item--page': true,
                                     'ais-Pagination-item--selected':
                                       page === currentRefinement,
                                   }"
                       v-for="page in pages"
-                      :key="page">
-                      <a class="ais-Pagination-link"
-                         :href="createURL(page)"
-                         :style="{
+                      :key="page"
+                    >
+                      <a
+                        class="ais-Pagination-link"
+                        :href="createURL(page)"
+                        :style="{
                                       fontWeight: page === currentRefinement ? 'bold' : '',
                                     }"
-                         v-on:click.prevent="refine(page)">{{ page + 1 }}</a>
+                        v-on:click.prevent="refine(page)"
+                      >{{ page + 1 }}</a>
                     </li>
-  
-                    <li class="ais-Pagination-item ais-Pagination-item--nextPage"
-                      v-if="!isLastPage">
-                      <a class="ais-Pagination-link"
-                         :href="createURL(currentRefinement + 1)"
-                         v-on:click.prevent="refine(currentRefinement + 1)"
-                         aria-label="Next">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                           viewBox="0 0 10 10"
-                           width="10"
-                           height="10">
-                          <g fill="none"
-                             fill-rule="evenodd"
-                             stroke="#000"
-                             stroke-linecap="round"
-                             stroke-linejoin="round"
-                             stroke-width="1.143">
+
+                    <li
+                      class="ais-Pagination-item ais-Pagination-item--nextPage"
+                      v-if="!isLastPage"
+                    >
+                      <a
+                        class="ais-Pagination-link"
+                        :href="createURL(currentRefinement + 1)"
+                        v-on:click.prevent="refine(currentRefinement + 1)"
+                        aria-label="Next"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 10 10"
+                          width="10"
+                          height="10"
+                        >
+                          <g
+                            fill="none"
+                            fill-rule="evenodd"
+                            stroke="#000"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.143"
+                          >
                             <path d="M1 5h8M5 9l4-4-4-4" />
                           </g>
                         </svg>
                       </a>
                     </li>
-  
-                    <li class="ais-Pagination-item ais-Pagination-item--nextPage ais-Pagination-item--disabled"
-                      v-if="isLastPage">
+
+                    <li
+                      class="ais-Pagination-item ais-Pagination-item--nextPage ais-Pagination-item--disabled"
+                      v-if="isLastPage"
+                    >
                       <span class="ais-Pagination-link">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                           viewBox="0 0 10 10"
-                           width="10"
-                           height="10">
-                          <g fill="none"
-                             fill-rule="evenodd"
-                             stroke="#000"
-                             stroke-linecap="round"
-                             stroke-linejoin="round"
-                             stroke-width="1.143">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 10 10"
+                          width="10"
+                          height="10"
+                        >
+                          <g
+                            fill="none"
+                            fill-rule="evenodd"
+                            stroke="#000"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.143"
+                          >
                             <path d="M1 5h8M5 9l4-4-4-4" />
                           </g>
                         </svg>
@@ -415,31 +524,39 @@
             </footer>
           </section>
         </main>
-  
+
         <aside data-layout="mobile">
-          <button class="filters-button" v-on:click="openFilters">
-            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 14">
-              <path d="M15 1H1l5.6 6.3v4.37L9.4 13V7.3z"
-                  stroke="#fff"
-                  stroke-width="1.29"
-                  fill="none"
-                  fill-rule="evenodd"
-                  stroke-linecap="round"
-                  stroke-linejoin="round" />
+          <button
+            class="filters-button"
+            v-on:click="openFilters"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewbox="0 0 16 14"
+            >
+              <path
+                d="M15 1H1l5.6 6.3v4.37L9.4 13V7.3z"
+                stroke="#fff"
+                stroke-width="1.29"
+                fill="none"
+                fill-rule="evenodd"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
-  
+
             Filters
           </button>
         </aside>
-  
+
       </ais-instant-search>
     </template>
   </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-instantsearch@3.4.2/dist/vue-instantsearch.js"></script>
-    <script src="js/search.js" type="module"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-instantsearch@3.4.2/dist/vue-instantsearch.js"></script>
+  <script src="js/search.js" type="module"></script>
 
 </body>
 

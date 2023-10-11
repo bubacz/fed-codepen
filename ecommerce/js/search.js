@@ -77,7 +77,7 @@ new Vue({
 			refine(value);
 		}),
 		goToSearchPage (query) {
-			location.href = "?query=" + query;
+			location.href = "/search.aspx?query=" + query;
 		},
 		formatCurrency(value) {
 			return new Intl.NumberFormat("en-CA", {

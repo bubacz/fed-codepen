@@ -3,7 +3,7 @@ import * as helpers from "./helpers.js";
 const algoliaClient = algoliasearch("3VY17DELF4", "455080cdf8c3e2f23fd7d106fac363c7");
 const searchClient = {
 	...algoliaClient,
-	search (requests) {
+	search(requests) {
 		// Detect empty search requests to prevent search request on every page load
 		if (requests.every(({ params }) => !params.query)) {
 			return Promise.resolve({
@@ -76,7 +76,7 @@ new Vue({
 			// Wait to search until after the user has stopped typing for 500ms
 			refine(value);
 		}),
-		goToSearchPage (query) {
+		goToSearchPage(query) {
 			location.href = "/search.aspx?query=" + query;
 		},
 		formatCurrency(value) {
@@ -85,6 +85,11 @@ new Vue({
 				currency: "CAD",
 				maximumFractionDigits: 2
 			}).format(value);
+		},
+		formatNumber(value) {
+			return Number(value).toLocaleString("en-CA", {
+				maximumFractionDigits: 2
+			});
 		},
 		toValue(value, range) {
 			return [typeof value.min === "number" ? value.min : range.min, typeof value.max === "number" ? value.max : range.max];

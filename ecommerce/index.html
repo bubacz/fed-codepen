@@ -118,6 +118,7 @@
                                       'categories.lvl1',
                                       'categories.lvl2',
                                       'categories.lvl3',
+                                      'categories.lvl4',
                                     ]"
                     />
                   </template>
@@ -196,7 +197,7 @@
                   </template>
   
                   <template #default>
-                    <ais-rating-menu attribute="rating">
+                    <ais-rating-menu attribute="avgRating" :max="5">
                       <template #default="{ items, refine, createURL }">
                         <ul class="ais-RatingMenu-list">
                           <li
@@ -321,6 +322,7 @@
                       class="hit-image"
                     />
                   </figure>
+
                   <div class="hit-info-container">
                     <p class="hit-category">
                       {{ item.categories[0] }}
@@ -343,7 +345,7 @@
                     <div class="hit-rating mb-3">
                       <template v-for="i in maxRating">
                         <svg
-                          :fill="i <= item.rating ? '#faa100' : '#eee'"
+                          :fill="i <= item.avgRating ? '#faa100' : '#eee'"
                           xmlns="http://www.w3.org/2000/svg"
                           height="1.5em"
                           viewBox="0 0 384 512"
@@ -353,6 +355,9 @@
                           />
                         </svg>
                       </template>
+
+                      {{ formatNumber(item.avgRating) }}
+                      ( {{ item.numRatings }} )
                     </div>
   
                     <p class="d-flex align-items-center">

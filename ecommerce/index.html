@@ -18,52 +18,6 @@
 <body>
 
   <div id="search-app">
-
-    <ais-instant-search
-        :search-client="searchClient"
-        :index-name="indexName"
-      >
-        <ais-autocomplete>
-          <template v-slot="{ currentRefinement, indices, refine, query }">
-          <div class="container-main flex-column">
-        
-            <!-- Search Input -->
-            <input
-            class="form-control form-control-lg"
-            type="search"
-            placeholder="Search..."
-            :value="currentRefinement"
-            v-on:input="refineSearch(refine, $event.currentTarget.value)"
-            v-on:keyup.enter="goToSearchPage($event.currentTarget.value)"
-            >
-        
-            <!-- Suggestion List -->
-            <template
-            v-if="currentRefinement"
-            v-for="index in indices"
-            :key="index.indexId"
-            >
-            <ul class="list-group">
-              <li
-              class="list-group-item"
-              v-for="hit in index.hits"
-              :key="hit.objectID"
-              >
-              <a :href="getProductLinkUrl(hit)">
-                <ais-highlight
-                attribute="productName"
-                :hit="hit"
-                />
-              </a>
-              </li>
-            </ul>
-            </template>
-        
-          </div>
-          </template>
-        </ais-autocomplete>
-      </ais-instant-search>
-    
     <template>
       <ais-instant-search
         :search-client="searchClient"
@@ -367,7 +321,6 @@
                       class="hit-image"
                     />
                   </figure>
-  
                   <div class="hit-info-container">
                     <p class="hit-category">
                       {{ item.categories[0] }}

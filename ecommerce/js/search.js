@@ -49,7 +49,7 @@ new Vue({
 								indexUiState.hierarchicalMenu &&
 								indexUiState.hierarchicalMenu["categories.lvl0"] &&
 								indexUiState.hierarchicalMenu["categories.lvl0"].join("/"),
-							// rating: indexUiState.ratingMenu && String(indexUiState.ratingMenu.avgRating),
+							rating: indexUiState.ratingMenu && String(indexUiState.ratingMenu.avgRating),
 							// price: indexUiState.range && indexUiState.range.price,
 							// sortBy: indexUiState.sortBy,
 							// hitsPerPage: (indexUiState.hitsPerPage && String(indexUiState.hitsPerPage)) || undefined
@@ -67,9 +67,9 @@ new Vue({
 								refinementList: {
 									manufacturerName: (routeState.brands && routeState.brands.split("/")) || undefined
 								},
-								// ratingMenu: {
-								// 	rating: Number(routeState.avgRating)
-								// },
+								ratingMenu: {
+									avgRating: Number(routeState.rating)
+								},
 								// range: {
 								//   price: routeState.price,
 								// },

@@ -86,10 +86,10 @@ new Vue({
 				maximumFractionDigits: 2
 			}).format(value);
 		},
-		formatNumber(value) {
-			return Number(value ?? 0).toLocaleString("en-CA", {
-				minimumFractionDigits: 2,
-				maximumFractionDigits: 2
+		formatNumber(value = 0, digits = 0) {
+			return Number(value).toLocaleString("en-CA", {
+				minimumFractionDigits: digits,
+				maximumFractionDigits: digits
 			});
 		},
 		toValue(value, range) {
@@ -117,7 +117,7 @@ new Vue({
 				? helpers.buildProductVariantLinkUrl(item.sku, item.manufacturerName, item.variantID)
 				: helpers.buildProductLinkUrl(item.productName, item.productID);
 		},
-		toDisplayLabel (str) {
+		toDisplayLabel(str) {
 			if (str.includes("manufacturername")) return "Brands";
 			if (str.includes("avgrating")) return "Rating";
 			if (str.includes("categories")) return "Category";

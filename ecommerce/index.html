@@ -353,6 +353,7 @@
                   <figure class="hit-image-container">
                     <img
                       :src="getProductImageSrc(item)"
+                      v-on:error="handleImageError($event.currentTarget)"
                       :alt="item.productName"
                       class="hit-image"
                     />

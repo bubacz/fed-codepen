@@ -122,6 +122,9 @@ new Vue({
 			if (str.includes("avgrating")) return "Rating";
 			if (str.includes("categories")) return "Category";
 			if (str.includes("price")) return "Price";
+		},
+		handleImageError (event) {
+			event.src = "https://d30ec9xstuh8sw.cloudfront.net/nopictureicon.gif";
 		}
 	}
 });

@@ -87,7 +87,8 @@ new Vue({
 			}).format(value);
 		},
 		formatNumber(value) {
-			return Number(value).toLocaleString("en-CA", {
+			return Number(value ?? 0).toLocaleString("en-CA", {
+				minimumFractionDigits: 2,
 				maximumFractionDigits: 2
 			});
 		},
@@ -115,6 +116,12 @@ new Vue({
 			return helpers.isProductVariant(item)
 				? helpers.buildProductVariantLinkUrl(item.sku, item.manufacturerName, item.variantID)
 				: helpers.buildProductLinkUrl(item.productName, item.productID);
+		},
+		toDisplayLabel (str) {
+			if (str.includes("manufacturername")) return "Brands";
+			if (str.includes("avgrating")) return "Rating";
+			if (str.includes("categories")) return "Category";
+			if (str.includes("price")) return "Price";
 		}
 	}
 });

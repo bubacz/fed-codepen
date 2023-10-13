@@ -24,50 +24,63 @@
         :index-name="indexName"
         :routing="routing"
       >
-  
-        <ais-search-box class="container-main">
-          <template v-slot="{ currentRefinement, isSearchStalled, refine }">
-            <div class="input-group rounded">
-  
-              <template v-if="isSearchStalled">
-                <span class="input-group-text">
-                  <i
-                    class="spinner-border spinner-border-sm text-secondary"
-                    role="status"
-                  >
-                    <span class="sr-only">Loading...</span>
-                  </i>
-                </span>
-              </template>
-  
-              <label
-                class="sr-only"
-                for="globalSearchInput"
-              >Search NCLM</label>
-              <input
-                id="globalSearchInput"
-                class="search-input form-control form-control-lg"
-                type="search"
-                v-on:input="refineSearch(refine, $event.currentTarget.value)"
-                :value="currentRefinement"
-                :disabled="isSearchStalled"
-                placeholder="Type to search..."
-                autocomplete="nope"
-                autocorrect="off"
-                autocapitalize="none"
-                spellcheck="false"
-                autofocus
-              >
-            </div>
-          </template>
-        </ais-search-box>
-  
+
+        <header class="container-main flex-column">
+          <ais-search-box>
+            <template v-slot="{ currentRefinement, isSearchStalled, refine }">
+              <div class="input-group">
+
+                <div class="input-group-prepend">
+                  <template v-if="isSearchStalled">
+                    <span class="input-group-text">
+                      <i
+                        class="spinner-border spinner-border-sm text-secondary"
+                        role="status"
+                      >
+                        <span class="sr-only">Loading...</span>
+                      </i>
+                    </span>
+                  </template>
+
+                  <template v-else>
+                    <span
+                      class="input-group-text bg-white"
+                      id="basic-addon1"
+                    >
+                      <i class="fa fa-search"></i>
+                    </span>
+                  </template>
+                </div>
+
+                <label
+                  class="sr-only"
+                  for="globalSearchInput"
+                >Search NCLM</label>
+                <input
+                  id="globalSearchInput"
+                  class="search-input form-control form-control-lg"
+                  type="search"
+                  v-on:input="refineSearch(refine, $event.currentTarget.value)"
+                  :value="currentRefinement"
+                  :disabled="isSearchStalled"
+                  placeholder="Type to search..."
+                  autocomplete="nope"
+                  autocorrect="off"
+                  autocapitalize="none"
+                  spellcheck="false"
+                  autofocus
+                >
+              </div>
+            </template>
+          </ais-search-box>
+        </header>
+
         <main class="container-main">
           <div class="container-wrapper">
             <section class="container-filters">
               <div class="container-header">
                 <h2>Filters</h2>
-  
+
                 <ais-clear-refinements data-layout="desktop">
                   <template #resetLabel>
                     <div class="clear-filters">
@@ -94,7 +107,7 @@
                     </div>
                   </template>
                 </ais-clear-refinements>
-  
+
                 <ais-stats data-layout="mobile">
                   <template #default="{ nbHits }">
                     <span class="ais-Stats-text">
@@ -103,13 +116,13 @@
                   </template>
                 </ais-stats>
               </div>
-  
+
               <div class="container-body">
                 <ais-panel>
                   <template #header>
                     Category
                   </template>
-  
+
                   <template #default>
                     <ais-hierarchical-menu
                       :sort-by="['name', 'count']"
@@ -123,26 +136,27 @@
                     />
                   </template>
                 </ais-panel>
-  
+
                 <ais-panel>
                   <template #header>
                     Brands
                   </template>
-  
+
                   <template #default>
                     <ais-refinement-list
                       attribute="manufacturerName"
                       searchable
                       searchable-placeholder="Search for brands..."
+                      show-more
                     />
                   </template>
                 </ais-panel>
-  
+
                 <ais-panel>
                   <template #header>
                     Price
                   </template>
-  
+
                   <template #default>
                     <ais-range-input attribute="price">
                       <template #default="{ currentRefinement, range, refine, canRefine }">
@@ -177,12 +191,12 @@
                     </ais-range-input>
                   </template>
                 </ais-panel>
-  
+
                 <ais-panel>
                   <template #header>
                     Free shipping
                   </template>
-  
+
                   <template #default>
                     <ais-toggle-refinement
                       attribute="free_shipping"
@@ -190,14 +204,17 @@
                     />
                   </template>
                 </ais-panel>
-  
+
                 <ais-panel>
                   <template #header>
                     Ratings
                   </template>
-  
+
                   <template #default>
-                    <ais-rating-menu attribute="avgRating" :max="5">
+                    <ais-rating-menu
+                      attribute="avgRating"
+                      :max="maxRating"
+                    >
                       <template #default="{ items, refine, createURL }">
                         <ul class="ais-RatingMenu-list">
                           <li
@@ -236,7 +253,7 @@
                                   />
                                 </svg>
                               </span>
-  
+
                               <span class="ais-RatingMenu-count">
                                 {{
                                               item.count
@@ -251,7 +268,7 @@
                 </ais-panel>
               </div>
             </section>
-  
+
             <footer
               class="container-filters-footer"
               data-layout="mobile"
@@ -260,7 +277,7 @@
                 class="container-filters-footer-button-wrapper"
                 v-on:click="closeFilters"
               />
-  
+
               <ais-stats class="container-filters-footer-button-wrapper">
                 <template #default="{ nbHits }">
                   <button
@@ -273,7 +290,7 @@
               </ais-stats>
             </footer>
           </div>
-  
+
           <section class="container-results">
             <header class="container-header container-options">
               <div class="col-auto">
@@ -289,7 +306,7 @@
                                   ]"
                 />
               </div>
-  
+
               <div class="col-auto">
                 <ais-hits-per-page
                   class="container-option"
@@ -311,7 +328,35 @@
                 />
               </div>
             </header>
-  
+
+            <aside>
+              <ais-current-refinements>
+                <template v-slot:item="{ item, refine, createURL }">
+                  <ul class="list-unstyled d-flex">
+                    <li class="mr-2">
+                      {{ toDisplayLabel(item.label.toLowerCase()) }}:
+                    </li>
+                    <li
+                      v-for="refinement in item.refinements"
+                      :key="[
+                        refinement.attribute,
+                        refinement.type,
+                        refinement.value,
+                        refinement.operator
+                      ].join(':')"
+                    >
+                      <a
+                        :href="createURL(refinement)"
+                        v-on:click.prevent="refine(refinement)"
+                      >
+                        {{ refinement.label }} <span class="fa fa-times"></span>
+                      </a>
+                    </li>
+                  </ul>
+                </template>
+              </ais-current-refinements>
+            </aside>
+
             <ais-hits>
               <template #item="{ item }">
                 <div class="hit">
@@ -327,27 +372,27 @@
                     <p class="hit-category">
                       {{ item.categories[0] }}
                     </p>
-  
+
                     <h1>
                       <ais-highlight
                         attribute="productName"
                         :hit="item"
                       />
                     </h1>
-  
+
                     <p class="hit-description">
                       <ais-snippet
                         attribute="description"
                         :hit="item"
                       />
                     </p>
-  
+
                     <div class="hit-rating mb-3">
                       <template v-for="i in maxRating">
                         <svg
                           :fill="i <= item.avgRating ? '#faa100' : '#eee'"
                           xmlns="http://www.w3.org/2000/svg"
-                          height="1.5em"
+                          height="1.25em"
                           viewBox="0 0 384 512"
                         >
                           <path
@@ -359,7 +404,7 @@
                       {{ formatNumber(item.avgRating) }}
                       ( {{ item.numRatings }} )
                     </div>
-  
+
                     <p class="d-flex align-items-center">
                       <template v-if="item.salePrice < item.price">
                         <span>From: <s>{{ formatCurrency(item.price) }}</s></span>
@@ -370,7 +415,7 @@
                         <span>From: {{ formatCurrency(item.price) }}</span>
                       </template>
                     </p>
-  
+
                     <a
                       class="btn btn-outline-secondary text-uppercase d-block rounded-0"
                       :href="getProductLinkUrl(item)"
@@ -384,9 +429,9 @@
                 </div>
               </template>
             </ais-hits>
-  
+
             <no-results />
-  
+
             <footer class="container-footer">
               <ais-pagination :padding="2">
                 <template #default="{
@@ -422,7 +467,7 @@
                         </svg>
                       </span>
                     </li>
-  
+
                     <li
                       class="ais-Pagination-item ais-Pagination-item--previousPage"
                       v-if="!isFirstPage"
@@ -452,7 +497,7 @@
                         </svg>
                       </a>
                     </li>
-  
+
                     <li
                       :class="{
                                       'ais-Pagination-item': true,
@@ -472,7 +517,7 @@
                         v-on:click.prevent="refine(page)"
                       >{{ page + 1 }}</a>
                     </li>
-  
+
                     <li
                       class="ais-Pagination-item ais-Pagination-item--nextPage"
                       v-if="!isLastPage"
@@ -502,7 +547,7 @@
                         </svg>
                       </a>
                     </li>
-  
+
                     <li
                       class="ais-Pagination-item ais-Pagination-item--nextPage ais-Pagination-item--disabled"
                       v-if="isLastPage"
@@ -533,7 +578,7 @@
             </footer>
           </section>
         </main>
-  
+
         <aside data-layout="mobile">
           <button
             class="filters-button"
@@ -553,20 +598,22 @@
                 stroke-linejoin="round"
               />
             </svg>
-  
+
             Filters
           </button>
         </aside>
-  
+
       </ais-instant-search>
     </template>
   </div>
-  
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue-instantsearch@3.4.2/dist/vue-instantsearch.js"></script>
-  <script src="js/search.js" type="module"></script>
+  <script
+    src="js/search.js"
+    type="module"
+  ></script>
 
 </body>
 

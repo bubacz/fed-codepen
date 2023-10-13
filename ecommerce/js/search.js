@@ -1,5 +1,6 @@
 import * as helpers from "./helpers.js";
 
+const indexName = "Production";
 const algoliaClient = algoliasearch("3VY17DELF4", "455080cdf8c3e2f23fd7d106fac363c7");
 const searchClient = {
 	...algoliaClient,
@@ -32,18 +33,48 @@ new Vue({
 			indexName: "Production",
 			searchClient,
 			maxRating: 5,
+			defaultImage: "https://d30ec9xstuh8sw.cloudfront.net/nopictureicon.gif",
 			routing: {
 				stateMapping: {
 					stateToRoute(uiState) {
-						const indexUiState = uiState["Production"];
+						const indexUiState = uiState[indexName];
 						return {
-							query: indexUiState.query
+							query: indexUiState.query,
+							page: indexUiState.page,
+							brands:
+								indexUiState.refinementList &&
+								indexUiState.refinementList.manufacturerName &&
+								indexUiState.refinementList.manufacturerName.join("/"),
+							category:
+								indexUiState.hierarchicalMenu &&
+								indexUiState.hierarchicalMenu["categories.lvl0"] &&
+								indexUiState.hierarchicalMenu["categories.lvl0"].join("/"),
+							// rating: indexUiState.ratingMenu && String(indexUiState.ratingMenu.avgRating),
+							// price: indexUiState.range && indexUiState.range.price,
+							// sortBy: indexUiState.sortBy,
+							// hitsPerPage: (indexUiState.hitsPerPage && String(indexUiState.hitsPerPage)) || undefined
 						};
 					},
+
 					routeToState(routeState) {
 						return {
-							["Production"]: {
-								query: routeState.query
+							[indexName]: {
+								query: routeState.query,
+								page: routeState.page,
+								hierarchicalMenu: {
+									"categories.lvl0": (routeState.category && routeState.category.split("/")) || undefined
+								},
+								refinementList: {
+									manufacturerName: (routeState.brands && routeState.brands.split("/")) || undefined
+								},
+								// ratingMenu: {
+								// 	rating: Number(routeState.avgRating)
+								// },
+								// range: {
+								//   price: routeState.price,
+								// },
+								// sortBy: routeState.sortBy,
+								// hitsPerPage: Number(routeState.hitsPerPage)
 							}
 						};
 					}
@@ -123,8 +154,8 @@ new Vue({
 			if (str.includes("categories")) return "Category";
 			if (str.includes("price")) return "Price";
 		},
-		handleImageError (event) {
-			event.src = "https://d30ec9xstuh8sw.cloudfront.net/nopictureicon.gif";
+		handleImageError(event) {
+			event.src = this.defaultImage;
 		}
 	}
 });

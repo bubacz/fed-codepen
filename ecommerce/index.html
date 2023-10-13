@@ -25,6 +25,8 @@
         :routing="routing"
       >
 
+        <!-- <ais-configure filters="recordType: Product" /> -->
+
         <header class="container-main flex-column">
           <ais-search-box>
             <template v-slot="{ currentRefinement, isSearchStalled, refine }">
@@ -323,10 +325,11 @@
               <ais-current-refinements>
                 <template v-slot:item="{ item, refine, createURL }">
                   <ul class="list-unstyled d-flex">
-                    <li class="mr-2">
+                    <li class="px-1">
                       {{ toDisplayLabel(item.label.toLowerCase()) }}:
                     </li>
                     <li
+                      class="px-1"
                       v-for="refinement in item.refinements"
                       :key="[
                         refinement.attribute,
@@ -356,6 +359,7 @@
                       v-on:error="handleImageError($event.currentTarget)"
                       :alt="item.productName"
                       class="hit-image"
+                      loading="lazy"
                     />
                   </figure>
 

@@ -277,11 +277,12 @@
                 <ais-sort-by
                   class="container-option"
                   :items="[
-                                    { value: 'primary', label: 'Featured' },
-                                    { value: 'primary_price_asc', label: 'Price ascending' },
-                                    {
-                                      value: 'primary_price_desc',
-                                      label: 'Price descending',
+                                    { value: 'Production', label: 'Featured' },
+                                    { value: 'Production_productName_asc', label: 'Name (A to Z)' },
+                                    { value: 'Production_productName_desc', label: 'Name (Z to A)' },
+                                    { value: 'Production_displayOrder_asc', label: 'Popularity' },
+                                    { value: 'Production_price_desc', label: 'Price (High to Low)' },
+                                    { value: 'Production_price_asc', label: 'Price (Low to High)',
                                     },
                                   ]"
                 />
@@ -396,11 +397,11 @@
 
                     <p class="d-flex align-items-center">
                       <template v-if="item.salePrice < item.price">
-                        <span>From: <s>{{ formatCurrency(item.price) }}</s></span>
+                        <span>From: <span class="sale-price">{{ formatCurrency(item.salePrice) }}</span></span>
                         &nbsp;
-                        <strong>{{ formatCurrency(item.salePrice) }}</strong>
+                        <s>{{ formatCurrency(item.price) }}</s>
                       </template>
-                      <template v-else>
+                      <template v-else-if="item.price">
                         <span>From: {{ formatCurrency(item.price) }}</span>
                       </template>
                     </p>

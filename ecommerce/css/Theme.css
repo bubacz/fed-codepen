@@ -536,3 +536,9 @@ a[class^="ais-"] {
 	height: 100%;
 	width: 100%;
 }
+
+/* Parts Engine */
+.sale-price {
+	color: #b00;
+	font-weight: 700;
+}

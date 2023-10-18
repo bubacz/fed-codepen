@@ -66,7 +66,7 @@ new Vue({
 								},
 								refinementList: {
 									manufacturerName: (routeState.brands && routeState.brands.split("/")) || undefined
-								},
+								}
 								// range: {
 								// 	avgRating: Number(routeState.rating)
 								// }
@@ -102,6 +102,9 @@ new Vue({
 		this.resultsContainer = document.querySelector(".container-results");
 		this.header = document.querySelector("#header");
 	},
+	components: {
+		vueSlider: window["vue-slider-component"]
+	},
 	methods: {
 		refineSearch: helpers.debounce((refine, value) => {
 			// Wait to search until after the user has stopped typing for 500ms
@@ -110,11 +113,11 @@ new Vue({
 		goToSearchPage(query) {
 			location.href = "/search.aspx?query=" + query;
 		},
-		formatCurrency(value) {
+		formatCurrency(value, digits = 2) {
 			return new Intl.NumberFormat("en-CA", {
 				style: "currency",
 				currency: "CAD",
-				maximumFractionDigits: 2
+				maximumFractionDigits: digits
 			}).format(value);
 		},
 		formatNumber(value = 0, digits = 0) {

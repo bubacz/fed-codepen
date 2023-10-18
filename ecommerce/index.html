@@ -188,7 +188,7 @@
                             />
                           </template>
                           <template #tooltip="{ value }">
-                            {{ formatCurrency(value) }}
+                            {{ formatCurrency(value, 0) }}
                           </template>
                         </vue-slider>
                       </template>
@@ -600,10 +600,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue-instantsearch@3.4.2/dist/vue-instantsearch.js"></script>
-  <script
-    src="js/search.js"
-    type="module"
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-slider-component@latest/dist/vue-slider-component.umd.min.js"></script>
+  <script src="js/search.js" type="module"></script>
 
 </body>
 

@@ -277,12 +277,12 @@
                 <ais-sort-by
                   class="container-option"
                   :items="[
-                                    { value: 'Production', label: 'Featured' },
-                                    { value: 'Production_productName_asc', label: 'Name (A to Z)' },
-                                    { value: 'Production_productName_desc', label: 'Name (Z to A)' },
-                                    { value: 'Production_displayOrder_asc', label: 'Popularity' },
-                                    { value: 'Production_price_desc', label: 'Price (High to Low)' },
-                                    { value: 'Production_price_asc', label: 'Price (Low to High)',
+                                    { value: indexName, label: 'Featured' },
+                                    { value: `${indexName}_productName_asc`, label: 'Name (A to Z)' },
+                                    { value: `${indexName}_productName_desc`, label: 'Name (Z to A)' },
+                                    { value: `${indexName}_displayOrder_asc`, label: 'Popularity' },
+                                    { value: `${indexName}_price_desc`, label: 'Price (High to Low)' },
+                                    { value: `${indexName}_price_asc`, label: 'Price (Low to High)',
                                     },
                                   ]"
                 />

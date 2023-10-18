@@ -173,6 +173,7 @@
                           :use-keyboard="true"
                           :enable-cross="false"
                           tooltip="always"
+                          :tooltip-placement="['top', 'bottom']"
                           :duration="0"
                           v-on:change="refine({ min: $event[0], max: $event[1] })"
                         >

@@ -30,7 +30,7 @@ new Vue({
 	el: "#search-app",
 	data() {
 		return {
-			indexName: "Production",
+			indexName,
 			searchClient,
 			maxRating: 5,
 			defaultImage: "https://d30ec9xstuh8sw.cloudfront.net/nopictureicon.gif",
@@ -49,7 +49,7 @@ new Vue({
 								indexUiState.hierarchicalMenu &&
 								indexUiState.hierarchicalMenu["categories.lvl0"] &&
 								indexUiState.hierarchicalMenu["categories.lvl0"].join("/"),
-							rating: indexUiState.ratingMenu && String(indexUiState.ratingMenu.avgRating),
+							// rating: indexUiState.range && String(indexUiState.range.avgRating)
 							// price: indexUiState.range && indexUiState.range.price,
 							// sortBy: indexUiState.sortBy,
 							// hitsPerPage: (indexUiState.hitsPerPage && String(indexUiState.hitsPerPage)) || undefined
@@ -67,9 +67,9 @@ new Vue({
 								refinementList: {
 									manufacturerName: (routeState.brands && routeState.brands.split("/")) || undefined
 								},
-								ratingMenu: {
-									avgRating: Number(routeState.rating)
-								},
+								// range: {
+								// 	avgRating: Number(routeState.rating)
+								// }
 								// range: {
 								//   price: routeState.price,
 								// },
@@ -156,6 +156,24 @@ new Vue({
 		},
 		handleImageError(event) {
 			event.src = this.defaultImage;
+		},
+		svgFill(i, rating) {
+			return i <= rating ? "#faa100" : "#eee";
+		},
+		svgColorStop(i, rating) {
+			const full = i <= Math.floor(rating);
+			const partial = i === Math.floor(rating) + 1;
+
+			if (full) {
+				// e.g. If rating is 3.55 then 4 flames will be 100% colored
+				return 1;
+			} else if (partial) {
+				// e.g. If rating is 3.55 then the fourth flame will be 35% colored
+				return rating % 1;
+			} else {
+				// e.g. If rating is 3.55 then the fifth flame will not be filled
+				return 0;
+			}
 		}
 	}
 });

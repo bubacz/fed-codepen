@@ -113,7 +113,11 @@
               </div>
 
               <div class="container-body">
-                <ais-panel>
+                <ais-panel :class-names="{
+                  'ais-Panel': 'card rounded-0 p-0 mb-4',
+                  'ais-Panel-header': 'card-header',
+                  'ais-Panel-body': 'card-body'
+                }">
                   <template #header>
                     Category
                   </template>
@@ -132,7 +136,11 @@
                   </template>
                 </ais-panel>
 
-                <ais-panel>
+                <ais-panel :class-names="{
+                  'ais-Panel': 'card rounded-0 p-0 mb-4',
+                  'ais-Panel-header': 'card-header',
+                  'ais-Panel-body': 'card-body'
+                }">
                   <template #header>
                     Brands
                   </template>
@@ -147,7 +155,11 @@
                   </template>
                 </ais-panel>
 
-                <ais-panel>
+                <ais-panel :class-names="{
+                  'ais-Panel': 'card shadow-sm rounded-0 pt-0 mb-4',
+                  'ais-Panel-header': 'card-header',
+                  'ais-Panel-body': 'card-body'
+                }">
                   <template #header>
                     Price
                   </template>
@@ -180,7 +192,7 @@
                             />
                           </template>
                           <template #tooltip="{ value }">
-                            {{ formatCurrency(value, 0) }}
+                            {{ formatNumber(value) }}
                           </template>
                         </vue-slider>
                       </template>
@@ -188,7 +200,11 @@
                   </template>
                 </ais-panel>
 
-                <ais-panel>
+                <ais-panel :class-names="{
+                  'ais-Panel': 'card rounded-0 p-0 mb-4',
+                  'ais-Panel-header': 'card-header',
+                  'ais-Panel-body': 'card-body'
+                }">
                   <template #header>
                     Ratings
                   </template>
@@ -206,7 +222,7 @@
                       <template v-slot="{ items, refine }">
 
                         <!-- Start: Rating list -->
-                        <ul class="list-unstyled">
+                        <ul class="list-unstyled mb-0">
 
                           <!-- Start: Rating list items -->
                           <li v-for="item in items" :key="item.value">
@@ -309,7 +325,7 @@
               </div>
             </header>
 
-            <aside>
+            <aside class="mb-3">
               <ais-current-refinements>
                 <template v-slot:item="{ item, refine, createURL }">
                   <ul class="list-unstyled d-flex">
@@ -338,9 +354,11 @@
               </ais-current-refinements>
             </aside>
 
-            <ais-hits>
+            <ais-hits :class-names="{
+              'ais-Hits-item': 'card shadow-sm rounded-0'
+            }">
               <template #item="{ item }">
-                <div class="hit">
+                <div class="card-header bg-transparent border-0">
                   <figure class="hit-image-container">
                     <img
                       :src="getProductImageSrc(item)"
@@ -350,25 +368,15 @@
                       loading="lazy"
                     />
                   </figure>
+                </div>
 
+                <div class="hit card-body bg-light">
                   <div class="hit-info-container">
                     <p class="hit-category">
-                      {{ item.categories[0] }}
+                      {{ item.categories.lvl0[0] }}
                     </p>
 
-                    <h1>
-                      <ais-highlight
-                        attribute="productName"
-                        :hit="item"
-                      />
-                    </h1>
-
-                    <p class="hit-description">
-                      <ais-snippet
-                        attribute="description"
-                        :hit="item"
-                      />
-                    </p>
+                    <h3 class="hit-title">{{ item.productName }}</h3>
 
                     <div class="hit-rating mb-3">
                       <template v-for="(i, index) in maxRating">
@@ -380,7 +388,7 @@
                           <defs>
                             <linearGradient :id="`${item.objectID}-${index}`" x1="0%" y1="0%" x2="100%" y2="0%">
                               <stop :offset="svgColorStop(i, item.avgRating)" stop-color="#FAA100" />
-                              <stop stop-color="#eee" />
+                              <stop stop-color="#ccc" />
                             </linearGradient>
                           </defs>
                           <path
@@ -404,17 +412,13 @@
                         <span>From: {{ formatCurrency(item.price) }}</span>
                       </template>
                     </p>
-
-                    <a
-                      class="btn btn-outline-secondary text-uppercase d-block rounded-0"
-                      :href="getProductLinkUrl(item)"
-                    >
-                      <i
-                        class="fa fa-sign-out mr-1"
-                        aria-hidden="true"
-                      ></i> See Details
-                    </a>
                   </div>
+                </div>
+                
+                <div class="card-footer bg-light border-0">
+                  <a class="btn btn-outline-secondary text-uppercase d-block rounded-0" :href="getProductLinkUrl(item)">
+                    <i class="fa fa-sign-out mr-1" aria-hidden="true"></i> See Details
+                  </a>
                 </div>
               </template>
             </ais-hits>

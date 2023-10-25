@@ -234,10 +234,6 @@
 
 	/* Hits */
 
-	.ais-Hits-list {
-		grid-gap: 1rem;
-	}
-
 	.hit {
 		display: flex;
 	}

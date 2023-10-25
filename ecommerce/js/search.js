@@ -113,7 +113,7 @@ new Vue({
 		goToSearchPage(query) {
 			location.href = "/search.aspx?query=" + query;
 		},
-		formatCurrency(value, digits = 2) {
+		formatCurrency(value = 0, digits = 2) {
 			return new Intl.NumberFormat("en-CA", {
 				style: "currency",
 				currency: "CAD",

@@ -825,21 +825,6 @@ mark {
 	word-break: break-word;
 }
 
-.hit-image-container {
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	height: 174px;
-	-webkit-box-pack: center;
-	-ms-flex-pack: center;
-	justify-content: center;
-	margin: auto;
-	width: 174px;
-}
-
 .hit-image {
 	height: auto;
 	max-height: 100%;
@@ -1201,13 +1186,6 @@ mark {
 		display: -webkit-box;
 		display: -ms-flexbox;
 		display: flex;
-	}
-
-	.hit-image-container {
-		-webkit-box-flex: 1;
-		-ms-flex: 1;
-		flex: 1;
-		margin-right: 2rem;
 	}
 
 	.hit-info-container {

@@ -195,10 +195,9 @@ mark {
 .hit-image-container {
 	align-items: center;
 	display: flex;
-	height: 174px;
+	height: 225px;
 	justify-content: center;
 	margin: auto;
-	width: 174px;
 }
 
 .hit-image {

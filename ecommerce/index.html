@@ -165,7 +165,7 @@
                   </template>
 
                   <template #default>
-                    <ais-range-input attribute="price">
+                    <ais-range-input attribute="salePrice">
                       <template #default="{ currentRefinement, range, refine, canRefine }">
                         <vue-slider
                           :min="range.min"
@@ -296,8 +296,8 @@
                                     { value: `${indexName}_productName_asc`, label: 'Name (A to Z)' },
                                     { value: `${indexName}_productName_desc`, label: 'Name (Z to A)' },
                                     { value: `${indexName}_displayOrder_asc`, label: 'Popularity' },
-                                    { value: `${indexName}_price_desc`, label: 'Price (High to Low)' },
-                                    { value: `${indexName}_price_asc`, label: 'Price (Low to High)',
+                                    { value: `${indexName}_salePrice_desc`, label: 'Price (High to Low)' },
+                                    { value: `${indexName}_salePrice_asc`, label: 'Price (Low to High)',
                                     },
                                   ]"
                 />

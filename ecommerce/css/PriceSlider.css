@@ -10,6 +10,7 @@
 	cursor: pointer;
 	height: 4px;
 	width: calc(100% - 1rem) !important;
+	margin: auto;
 }
 
 .vue-slider-process {
@@ -20,7 +21,7 @@
 .vue-slider-dot-tooltip {
 	cursor: grab;
 	display: flex;
-	font-size: 0.75rem;
+	font-size: 0.875rem;
 	font-weight: bold;
 	margin-top: 5px;
 }
@@ -37,6 +38,10 @@
 	cursor: -moz-grabbing;
 	text-align: center;
 	white-space: nowrap;
+}
+
+.vue-slider-dot-tooltip-bottom {
+	margin-left: -10px;
 }
 
 .vue-slider-dot-handle {
@@ -102,7 +107,7 @@ a[class^="ais-"] {
 .ais-Stats,
 .ais-ToggleRefinement {
 	color: #21243d;
-	font-size: 0.75rem;
+	font-size: 0.875rem;
 }
 
 .ais-Highlight-highlighted,
@@ -144,34 +149,6 @@ a[class^="ais-"] {
 
 .ais-RatingMenu-starIcon--empty {
 	fill: rgba(0, 0, 0, 0.08);
-}
-
-.ais-Panel--collapsible {
-	position: relative;
-}
-
-.ais-Panel--collapsed .ais-Panel-body,
-.ais-Panel--collapsed .ais-Panel-footer {
-	display: none;
-}
-
-.ais-Panel-collapseButton {
-	background: none;
-	border: none;
-	cursor: pointer;
-	padding: 0;
-	position: absolute;
-	right: 0;
-}
-
-.ais-Panel-header {
-	border: none;
-	color: #21243d;
-	font-size: 0.678rem;
-	font-weight: 600;
-	letter-spacing: 0.08rem;
-	line-height: 1.6;
-	text-transform: uppercase;
 }
 
 .ais-SearchBox-form {
@@ -436,17 +413,6 @@ a[class^="ais-"] {
 	transform: translateX(100%);
 }
 
-.ais-HitsPerPage,
-.ais-SortBy {
-	position: relative;
-}
-
-.ais-HitsPerPage:after,
-.ais-SortBy:after {
-	content: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M14-5v16H-2V-5z'/%3E%3Cpath fill='%23000' stroke='%23FFF' stroke-width='.5' d='M2.228 1.332a.664.664 0 00-.942.001.665.665 0 00-.002.941l4.247 4.247c.259.26.679.26.938 0l4.247-4.247a.664.664 0 00-.002-.94.666.666 0 00-.942-.002L6 5.105 2.228 1.332z'/%3E%3C/g%3E%3C/svg%3E");
-	display: inline-block;
-}
-
 .ais-HitsPerPage-select,
 .ais-SortBy-select {
 	-webkit-appearance: none;
@@ -693,10 +659,6 @@ h2 {
 
 .container-options .container-option:not(:first-child) {
 	margin-left: 48px;
-}
-
-.container-options select {
-	min-width: 100px;
 }
 
 .container-footer {
@@ -1018,7 +980,7 @@ mark {
 		display: -ms-flexbox;
 		display: flex;
 		font: inherit;
-		font-size: 0.75rem;
+		font-size: 0.875rem;
 		font-weight: 700;
 		-webkit-box-pack: center;
 		-ms-flex-pack: center;

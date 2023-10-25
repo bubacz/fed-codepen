@@ -50,7 +50,7 @@ new Vue({
 								indexUiState.hierarchicalMenu["categories.lvl0"] &&
 								indexUiState.hierarchicalMenu["categories.lvl0"].join("/"),
 							// rating: indexUiState.range && String(indexUiState.range.avgRating)
-							price: indexUiState.range && indexUiState.range.price,
+							price: indexUiState.range && indexUiState.range.salePrice,
 							sortBy: indexUiState.sortBy,
 							// hitsPerPage: (indexUiState.hitsPerPage && String(indexUiState.hitsPerPage)) || undefined
 						};
@@ -71,7 +71,7 @@ new Vue({
 								// 	avgRating: Number(routeState.rating)
 								// }
 								range: {
-								  price: routeState.price,
+									salePrice: routeState.price,
 								},
 								sortBy: routeState.sortBy,
 								// hitsPerPage: Number(routeState.hitsPerPage)

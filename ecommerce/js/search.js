@@ -36,6 +36,7 @@ new Vue({
 			defaultImage: "https://d30ec9xstuh8sw.cloudfront.net/nopictureicon.gif",
 			routing: {
 				stateMapping: {
+					// Update URL parameters each time the application state changes
 					stateToRoute(uiState) {
 						const indexUiState = uiState[indexName];
 						return {
@@ -49,13 +50,14 @@ new Vue({
 								indexUiState.hierarchicalMenu &&
 								indexUiState.hierarchicalMenu["categories.lvl0"] &&
 								indexUiState.hierarchicalMenu["categories.lvl0"].join("/"),
-							// rating: indexUiState.range && String(indexUiState.range.avgRating)
+							// rating: indexUiState.numericMenu && String(indexUiState.numericMenu.avgRating),
 							price: indexUiState.range && indexUiState.range.salePrice,
-							sortBy: indexUiState.sortBy,
+							sortBy: indexUiState.sortBy
 							// hitsPerPage: (indexUiState.hitsPerPage && String(indexUiState.hitsPerPage)) || undefined
 						};
 					},
 
+					// Set application state when the page loads based on URL parameters
 					routeToState(routeState) {
 						return {
 							[indexName]: {
@@ -67,13 +69,13 @@ new Vue({
 								refinementList: {
 									manufacturerName: (routeState.brands && routeState.brands.split("/")) || undefined
 								},
-								// range: {
-								// 	avgRating: Number(routeState.rating)
-								// }
 								range: {
-									salePrice: routeState.price,
+									salePrice: routeState.price
 								},
-								sortBy: routeState.sortBy,
+								// numericMenu: {
+								// 	avgRating: (routeState.rating && Number(routeState.rating)) || undefined
+								// },
+								sortBy: routeState.sortBy
 								// hitsPerPage: Number(routeState.hitsPerPage)
 							}
 						};

@@ -101,8 +101,8 @@ mark {
 	padding-top: 2rem;
 }
 
-.ais-Panel-header {
-	font-family: Hind, sans-serif;
+.ais-Panel .ais-Panel-header {
+	font-size: 0.75rem;
 }
 
 /* Search box */

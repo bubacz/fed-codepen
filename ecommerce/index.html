@@ -376,7 +376,9 @@
                       {{ item.categories.lvl0[0] }}
                     </p>
 
-                    <h3 class="hit-title">{{ item.productName }}</h3>
+                    <h3 class="hit-title">
+                      {{ item.recordType === 'ProductVariant' ? item.variantName : item.productName }}
+                    </h3>
 
                     <div class="hit-rating mb-3">
                       <template v-for="(i, index) in maxRating">

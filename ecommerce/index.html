@@ -308,17 +308,17 @@
                   class="container-option"
                   :items="[
                                     {
-                                      label: '16 hits per page',
-                                      value: 16,
+                                      label: '18 hits per page',
+                                      value: 18,
                                       default: true,
                                     },
                                     {
-                                      label: '32 hits per page',
-                                      value: 32,
+                                      label: '36 hits per page',
+                                      value: 36,
                                     },
                                     {
-                                      label: '64 hits per page',
-                                      value: 64,
+                                      label: '60 hits per page',
+                                      value: 60,
                                     },
                                   ]"
                 />
@@ -358,6 +358,10 @@
               'ais-Hits-item': 'card shadow-sm rounded-0'
             }">
               <template #item="{ item }">
+
+                {{item.sku}}
+                {{item.recordType}}
+
                 <div class="card-header bg-white">
                   <figure class="hit-image-container">
                     <img

@@ -355,7 +355,7 @@
               <template #item="{ item }">
 
                 <!-- Product Variant Template -->
-                <template v-if="helpers.isProductVariant(item.recordType)">
+                <template v-if="isProductVariant(item.recordType)">
                   <div class="card-header bg-white">
                     <figure class="hit-image-container">
                       <img :src="getImageSrc(item)" v-on:error="handleImageError($event.currentTarget)" :alt="item.productName" class="hit-image"

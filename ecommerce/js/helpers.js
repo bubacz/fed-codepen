@@ -1,7 +1,3 @@
-export function isProductVariant(recordType) {
-	return recordType === "ProductVariant";
-}
-
 export function buildProductImageSrc(item) {
 	return `https://es3s8h4u92.execute-api.ca-central-1.amazonaws.com/production/images/product/large/${item.productID}.jpg?width=400&quality=0.5`;
 }

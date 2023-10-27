@@ -143,13 +143,16 @@ new Vue({
 			window.removeEventListener("keyup", this.onKeyUp);
 			window.removeEventListener("click", this.onClick);
 		},
+		isProductVariant(recordType) {
+			return recordType === "ProductVariant";
+		},
 		getImageSrc(item) {
-			return helpers.isProductVariant(item.recordType)
+			return this.isProductVariant(item.recordType)
 				? helpers.buildProductVariantImageSrc(item)
 				: helpers.buildProductImageSrc(item);
 		},
 		getLinkUrl(item) {
-			return helpers.isProductVariant(item.recordType)
+			return this.isProductVariant(item.recordType)
 				? helpers.buildProductVariantLinkUrl(item)
 				: helpers.buildProductLinkUrl(item);
 		},

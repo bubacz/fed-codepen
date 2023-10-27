@@ -71,7 +71,7 @@
                   autocapitalize="none"
                   spellcheck="false"
                   autofocus
-                >
+                />
               </div>
             </template>
           </ais-search-box>
@@ -151,6 +151,8 @@
                       searchable
                       searchable-placeholder="Search for brands..."
                       show-more
+                      :limit="12"
+                      :show-more-limit="24"
                     />
                   </template>
                 </ais-panel>
@@ -209,7 +211,7 @@
                     Ratings
                   </template>
 
-                  <template #default>
+                  <template>
                     <ais-numeric-menu
                       attribute="avgRating"
                       :items="[
@@ -219,7 +221,7 @@
                         { label: 1, start: 1 },
                       ]"
                     >
-                      <template v-slot="{ items, refine }">
+                      <template v-slot="{ items, refine, canRefine }">
 
                         <!-- Start: Rating list -->
                         <ul class="list-unstyled mb-0">
@@ -238,7 +240,7 @@
                                   <path d="M153.6 29.9l16-21.3C173.6 3.2 180 0 186.7 0C198.4 0 208 9.6 208 21.3V43.5c0 13.1 5.4 25.7 14.9 34.7L307.6 159C356.4 205.6 384 270.2 384 337.7C384 434 306 512 209.7 512H192C86 512 0 426 0 320v-3.8c0-48.8 19.4-95.6 53.9-130.1l3.5-3.5c4.2-4.2 10-6.6 16-6.6C85.9 176 96 186.1 96 198.6V288c0 35.3 28.7 64 64 64s64-28.7 64-64v-3.9c0-18-7.2-35.3-19.9-48l-38.6-38.6c-24-24-37.5-56.7-37.5-90.7c0-27.7 9-54.8 25.6-76.9z" />
                                 </svg>
                               </template>
-                              & Up
+                              & Up ({{ item.count }})
                               <!-- End: Rating icons -->
                                 
                             </a>
@@ -287,10 +289,25 @@
           </div>
 
           <section class="container-results">
-            <header class="container-header container-options">
-              <div class="col-auto">
+            <header class="container-header container-options container-gap no-gutters align-items-end flex-wrap">
+              <div class="col-sm">
+                <ais-stats>
+                  <template v-slot="{ nbHits, nbPages, hitsPerPage, page, query }">
+                    <p class="mb-0">
+                      Showing
+                      {{ (page * hitsPerPage) + 1 }} -
+                      {{ ((page + 1) * (hitsPerPage)) < nbHits ? (page + 1) * (hitsPerPage) : nbHits }}
+                      of <strong>{{ nbHits }} results</strong>
+                      for "{{ query }}"
+                    </p>
+                  </template>
+                </ais-stats>
+              </div>
+
+              <div class="col-sm-auto">
                 <ais-sort-by
                   class="container-option"
+                  :class-names="{'ais-SortBy-select': 'form-control rounded-0'}"
                   :items="[
                                     { value: indexName, label: 'Featured' },
                                     { value: `${indexName}_productName_asc`, label: 'Name (A to Z)' },
@@ -298,27 +315,6 @@
                                     { value: `${indexName}_displayOrder_asc`, label: 'Popularity' },
                                     { value: `${indexName}_salePrice_desc`, label: 'Price (High to Low)' },
                                     { value: `${indexName}_salePrice_asc`, label: 'Price (Low to High)',
-                                    },
-                                  ]"
-                />
-              </div>
-
-              <div class="col-auto">
-                <ais-hits-per-page
-                  class="container-option"
-                  :items="[
-                                    {
-                                      label: '18 hits per page',
-                                      value: 18,
-                                      default: true,
-                                    },
-                                    {
-                                      label: '36 hits per page',
-                                      value: 36,
-                                    },
-                                    {
-                                      label: '60 hits per page',
-                                      value: 60,
                                     },
                                   ]"
                 />
@@ -358,10 +354,6 @@
               'ais-Hits-item': 'card shadow-sm rounded-0'
             }">
               <template #item="{ item }">
-
-                {{item.sku}}
-                {{item.recordType}}
-
                 <div class="card-header bg-white">
                   <figure class="hit-image-container">
                     <img

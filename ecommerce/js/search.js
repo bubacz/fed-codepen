@@ -32,6 +32,7 @@ new Vue({
 		return {
 			indexName,
 			searchClient,
+			query: "",
 			maxRating: 5,
 			defaultImage: "https://d30ec9xstuh8sw.cloudfront.net/nopictureicon.gif",
 			routing: {
@@ -110,8 +111,12 @@ new Vue({
 	methods: {
 		refineSearch: helpers.debounce((refine, value) => {
 			// Wait to search until after the user has stopped typing for 500ms
+			setQuery(value);
 			refine(value);
 		}),
+		setQuery (query) {
+			this.query = query;
+		},
 		goToSearchPage(query) {
 			location.href = "/search.aspx?query=" + query;
 		},

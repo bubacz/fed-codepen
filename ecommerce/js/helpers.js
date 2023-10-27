@@ -1,10 +1,10 @@
 
 function toKebabCase(str) {
-	return str.toLowerCase().replace(/\s+/g, "-");
+	return str?.toLowerCase().replace(/\s+/g, "-");
 }
 
 export function isProductVariant(item) {
-	return item.recordType === "ProductVariant";
+	return item?.recordType === "ProductVariant";
 }
 
 export function buildProductImageSrc(productID) {

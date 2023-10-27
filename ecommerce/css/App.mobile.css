@@ -14,6 +14,7 @@
 		width: 100%;
 		will-change: transform;
 		z-index: 1;
+		box-shadow: 0 1rem 3rem rgba(0,0,0,.175);
 	}
 
 	.container-filters .container-header,
@@ -166,14 +167,12 @@
 	/* RefinementList */
 
 	.ais-RefinementList-list {
-		display: grid;
-		grid-auto-flow: column;
-		grid-gap: 0 2rem;
-		grid-template-rows: repeat(5, 1fr);
+		display: flex;
+		flex-wrap: wrap;
 	}
 
 	.ais-RefinementList-item {
-		flex: 50%;
+		flex: 1 0 250px;
 	}
 
 	.ais-RefinementList-checkbox {

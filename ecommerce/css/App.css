@@ -166,7 +166,10 @@ mark {
 
 .hit-title {
 	font-size: 1rem;
-	margin-bottom: 1rem;
+}
+
+.hit-title-lg {
+	font-size: 1.5rem;
 }
 
 .hit-category {
@@ -194,6 +197,12 @@ mark {
 	height: 225px;
 	justify-content: center;
 	margin: auto;
+}
+
+.hit-image-container.product-variant {
+	height: auto;
+	max-width: 600px;
+	padding: 1rem;
 }
 
 .hit-image {

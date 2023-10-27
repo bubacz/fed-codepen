@@ -516,10 +516,13 @@ a[class^="ais-"] {
 	width: 100%;
 }
 
-/* Parts Engine */
 .sale-price {
 	color: #b00;
 	font-weight: 700;
+}
+
+.grid-span-full {
+	grid-column: 1/-1;
 }
 
 .container-gap {

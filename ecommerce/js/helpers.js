@@ -1,27 +1,21 @@
-
-function toKebabCase(str) {
-	return str?.toLowerCase().replace(/\s+/g, "-");
+export function isProductVariant(recordType) {
+	return recordType === "ProductVariant";
 }
 
-export function isProductVariant(item) {
-	return item?.recordType === "ProductVariant";
+export function buildProductImageSrc(item) {
+	return `https://es3s8h4u92.execute-api.ca-central-1.amazonaws.com/production/images/product/large/${item.productID}.jpg?width=400&quality=0.5`;
 }
 
-export function buildProductImageSrc(productID) {
-	return `https://es3s8h4u92.execute-api.ca-central-1.amazonaws.com/production/images/product/large/${productID}.jpg?width=400&quality=0.5`;
+export function buildProductVariantImageSrc(item) {
+	return `https://es3s8h4u92.execute-api.ca-central-1.amazonaws.com/production/images/SKU/large/${item.manufacturerSEName}/${item.seVariantSKU}.jpg?width=600&quality=0.5`;
 }
 
-export function buildProductVariantImageSrc(manufacturerName, sku) {
-	return `https://d30ec9xstuh8sw.cloudfront.net/images/SKU/large/${toKebabCase(manufacturerName)}/${sku}.jpg`;
+export function buildProductLinkUrl(item) {
+	return `/${item.productSEName}-p-${item.productID}.aspx`;
 }
 
-export function buildProductLinkUrl(productName, productID) {
-	return `/${toKebabCase(productName)}-p-${productID}.aspx`;
-}
-
-export function buildProductVariantLinkUrl(sku, manufacturerName, variantID) {
-	// TODO: Figure out how to actually build this URL. This is currently just a placeholder for that doesn't work.
-	return `/${sku}-vp-${toKebabCase(manufacturerName)}-${variantID}.aspx`;
+export function buildProductVariantLinkUrl(item) {
+	return `/${item.seVariantSKU}-vp-${item.manufacturerSEName}-${item.manufacturerID}.aspx`;
 }
 
 export function debounce(func, timeout = 500) {

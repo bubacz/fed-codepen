@@ -143,15 +143,15 @@ new Vue({
 			window.removeEventListener("keyup", this.onKeyUp);
 			window.removeEventListener("click", this.onClick);
 		},
-		getProductImageSrc(item) {
-			return helpers.isProductVariant(item)
-				? helpers.buildProductVariantImageSrc(item.manufacturerName, item.sku)
-				: helpers.buildProductImageSrc(item.productID);
+		getImageSrc(item) {
+			return helpers.isProductVariant(item.recordType)
+				? helpers.buildProductVariantImageSrc(item)
+				: helpers.buildProductImageSrc(item);
 		},
-		getProductLinkUrl(item) {
-			return helpers.isProductVariant(item)
-				? helpers.buildProductVariantLinkUrl(item.sku, item.manufacturerName, item.variantID)
-				: helpers.buildProductLinkUrl(item.productName, item.productID);
+		getLinkUrl(item) {
+			return helpers.isProductVariant(item.recordType)
+				? helpers.buildProductVariantLinkUrl(item)
+				: helpers.buildProductLinkUrl(item);
 		},
 		toDisplayLabel(str) {
 			if (str.includes("manufacturername")) return "Brands";

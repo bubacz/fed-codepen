@@ -25,8 +25,6 @@
         :routing="routing"
       >
 
-        <!-- <ais-configure filters="recordType: Product" /> -->
-
         <header class="container-main flex-column">
           <ais-search-box>
             <template v-slot="{ currentRefinement, isSearchStalled, refine }">
@@ -221,7 +219,7 @@
                         { label: 1, start: 1 },
                       ]"
                     >
-                      <template v-slot="{ items, refine, canRefine }">
+                      <template v-slot="{ items, refine }">
 
                         <!-- Start: Rating list -->
                         <ul class="list-unstyled mb-0">
@@ -240,7 +238,7 @@
                                   <path d="M153.6 29.9l16-21.3C173.6 3.2 180 0 186.7 0C198.4 0 208 9.6 208 21.3V43.5c0 13.1 5.4 25.7 14.9 34.7L307.6 159C356.4 205.6 384 270.2 384 337.7C384 434 306 512 209.7 512H192C86 512 0 426 0 320v-3.8c0-48.8 19.4-95.6 53.9-130.1l3.5-3.5c4.2-4.2 10-6.6 16-6.6C85.9 176 96 186.1 96 198.6V288c0 35.3 28.7 64 64 64s64-28.7 64-64v-3.9c0-18-7.2-35.3-19.9-48l-38.6-38.6c-24-24-37.5-56.7-37.5-90.7c0-27.7 9-54.8 25.6-76.9z" />
                                 </svg>
                               </template>
-                              & Up ({{ item.count }})
+                              & Up
                               <!-- End: Rating icons -->
                                 
                             </a>
@@ -353,71 +351,145 @@
             <ais-hits :class-names="{
               'ais-Hits-item': 'card shadow-sm rounded-0'
             }">
+
               <template #item="{ item }">
-                <div class="card-header bg-white">
-                  <figure class="hit-image-container">
-                    <img
-                      :src="getProductImageSrc(item)"
-                      v-on:error="handleImageError($event.currentTarget)"
-                      :alt="item.productName"
-                      class="hit-image"
-                      loading="lazy"
-                    />
-                  </figure>
-                </div>
 
-                <div class="hit card-body bg-light">
-                  <div class="hit-info-container">
-                    <p class="hit-category">
-                      {{ item.categories.lvl0[0] }}
-                    </p>
-
-                    <h3 class="hit-title">
-                      {{ item.recordType === 'ProductVariant' ? item.variantName : item.productName }}
-                    </h3>
-
-                    <div class="hit-rating mb-3">
-                      <template v-for="(i, index) in maxRating">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="1.25em"
-                          viewBox="0 0 384 512"
-                        >
-                          <defs>
-                            <linearGradient :id="`${item.objectID}-${index}`" x1="0%" y1="0%" x2="100%" y2="0%">
-                              <stop :offset="svgColorStop(i, item.avgRating)" stop-color="#FAA100" />
-                              <stop stop-color="#ccc" />
-                            </linearGradient>
-                          </defs>
-                          <path
-                            d="M153.6 29.9l16-21.3C173.6 3.2 180 0 186.7 0C198.4 0 208 9.6 208 21.3V43.5c0 13.1 5.4 25.7 14.9 34.7L307.6 159C356.4 205.6 384 270.2 384 337.7C384 434 306 512 209.7 512H192C86 512 0 426 0 320v-3.8c0-48.8 19.4-95.6 53.9-130.1l3.5-3.5c4.2-4.2 10-6.6 16-6.6C85.9 176 96 186.1 96 198.6V288c0 35.3 28.7 64 64 64s64-28.7 64-64v-3.9c0-18-7.2-35.3-19.9-48l-38.6-38.6c-24-24-37.5-56.7-37.5-90.7c0-27.7 9-54.8 25.6-76.9z"
-                            :fill="`url(#${item.objectID}-${index})`"
-                          />
-                        </svg>
-                      </template>
-
-                      {{ formatNumber(item.avgRating, 2) }}
-                      ({{ item.numRatings }})
-                    </div>
-
-                    <p class="d-flex align-items-center">
-                      <template v-if="item.salePrice < item.price">
-                        <span>From: <span class="sale-price">{{ formatCurrency(item.salePrice) }}</span></span>
-                        &nbsp;
-                        <s>{{ formatCurrency(item.price) }}</s>
-                      </template>
-                      <template v-else-if="item.price">
-                        <span>From: {{ formatCurrency(item.price) }}</span>
-                      </template>
-                    </p>
+                <!-- Product Variant Template -->
+                <template v-if="item.recordType === 'ProductVariant'">
+                  <div class="card-header bg-white">
+                    <figure class="hit-image-container">
+                      <img
+                        :src="getImageSrc(item)"
+                        v-on:error="handleImageError($event.currentTarget)"
+                        :alt="item.productName"
+                        class="hit-image"
+                        loading="lazy"
+                      />
+                    </figure>
                   </div>
-                </div>
-                
-                <div class="card-footer bg-light border-0">
-                  <a class="btn btn-outline-secondary text-uppercase d-block rounded-0" :href="getProductLinkUrl(item)">
-                    <i class="fa fa-sign-out mr-1" aria-hidden="true"></i> See Details
-                  </a>
-                </div>
+
+                  <div class="hit card-body bg-light">
+                    <div class="hit-info-container">
+                      <p class="hit-category">
+                        {{ item.categories.lvl0[0] }}
+                      </p>
+  
+                      <h3 class="hit-title">
+                        {{ item.variantName }}
+                      </h3>
+  
+                      <div class="hit-rating mb-3">
+                        <template v-for="(i, index) in maxRating">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="1.25em"
+                            viewBox="0 0 384 512"
+                          >
+                            <defs>
+                              <linearGradient :id="`${item.objectID}-${index}`" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop :offset="svgColorStop(i, item.avgRating)" stop-color="#FAA100" />
+                                <stop stop-color="#ccc" />
+                              </linearGradient>
+                            </defs>
+                            <path
+                              d="M153.6 29.9l16-21.3C173.6 3.2 180 0 186.7 0C198.4 0 208 9.6 208 21.3V43.5c0 13.1 5.4 25.7 14.9 34.7L307.6 159C356.4 205.6 384 270.2 384 337.7C384 434 306 512 209.7 512H192C86 512 0 426 0 320v-3.8c0-48.8 19.4-95.6 53.9-130.1l3.5-3.5c4.2-4.2 10-6.6 16-6.6C85.9 176 96 186.1 96 198.6V288c0 35.3 28.7 64 64 64s64-28.7 64-64v-3.9c0-18-7.2-35.3-19.9-48l-38.6-38.6c-24-24-37.5-56.7-37.5-90.7c0-27.7 9-54.8 25.6-76.9z"
+                              :fill="`url(#${item.objectID}-${index})`"
+                            />
+                          </svg>
+                        </template>
+  
+                        {{ formatNumber(item.avgRating, 2) }}
+                        ({{ item.numRatings }})
+                      </div>
+  
+                      <p class="d-flex align-items-center">
+                        <template v-if="item.salePrice < item.price">
+                          <span>From: <span class="sale-price">{{ formatCurrency(item.salePrice) }}</span></span>
+                          &nbsp;
+                          <s>{{ formatCurrency(item.price) }}</s>
+                        </template>
+                        <template v-else-if="item.price">
+                          <span>From: {{ formatCurrency(item.price) }}</span>
+                        </template>
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div class="card-footer bg-light border-0">
+                    <a class="btn btn-outline-secondary text-uppercase d-block rounded-0" :href="getLinkUrl(item)">
+                      <i class="fa fa-sign-out mr-1" aria-hidden="true"></i> See Details
+                    </a>
+                  </div>
+                </template>
+
+                <!-- Product Template -->
+                <template v-else>
+                  <div class="card-header bg-white">
+                    <figure class="hit-image-container">
+                      <img
+                        :src="getImageSrc(item)"
+                        v-on:error="handleImageError($event.currentTarget)"
+                        :alt="item.productName"
+                        class="hit-image"
+                        loading="lazy"
+                      />
+                    </figure>
+                  </div>
+
+                  <div class="hit card-body bg-light">
+                    <div class="hit-info-container">
+                      <p class="hit-category">
+                        {{ item.categories.lvl0[0] }}
+                      </p>
+  
+                      <h3 class="hit-title">
+                        {{ item.productName }}
+                      </h3>
+  
+                      <div class="hit-rating mb-3">
+                        <template v-for="(i, index) in maxRating">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="1.25em"
+                            viewBox="0 0 384 512"
+                          >
+                            <defs>
+                              <linearGradient :id="`${item.objectID}-${index}`" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop :offset="svgColorStop(i, item.avgRating)" stop-color="#FAA100" />
+                                <stop stop-color="#ccc" />
+                              </linearGradient>
+                            </defs>
+                            <path
+                              d="M153.6 29.9l16-21.3C173.6 3.2 180 0 186.7 0C198.4 0 208 9.6 208 21.3V43.5c0 13.1 5.4 25.7 14.9 34.7L307.6 159C356.4 205.6 384 270.2 384 337.7C384 434 306 512 209.7 512H192C86 512 0 426 0 320v-3.8c0-48.8 19.4-95.6 53.9-130.1l3.5-3.5c4.2-4.2 10-6.6 16-6.6C85.9 176 96 186.1 96 198.6V288c0 35.3 28.7 64 64 64s64-28.7 64-64v-3.9c0-18-7.2-35.3-19.9-48l-38.6-38.6c-24-24-37.5-56.7-37.5-90.7c0-27.7 9-54.8 25.6-76.9z"
+                              :fill="`url(#${item.objectID}-${index})`"
+                            />
+                          </svg>
+                        </template>
+  
+                        {{ formatNumber(item.avgRating, 2) }}
+                        ({{ item.numRatings }})
+                      </div>
+  
+                      <p class="d-flex align-items-center">
+                        <template v-if="item.salePrice < item.price">
+                          <span>From: <span class="sale-price">{{ formatCurrency(item.salePrice) }}</span></span>
+                          &nbsp;
+                          <s>{{ formatCurrency(item.price) }}</s>
+                        </template>
+                        <template v-else-if="item.price">
+                          <span>From: {{ formatCurrency(item.price) }}</span>
+                        </template>
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div class="card-footer bg-light border-0">
+                    <a class="btn btn-outline-secondary text-uppercase d-block rounded-0" :href="getLinkUrl(item)">
+                      <i class="fa fa-sign-out mr-1" aria-hidden="true"></i> See Details
+                    </a>
+                  </div>
+                </template>
+
               </template>
             </ais-hits>
 

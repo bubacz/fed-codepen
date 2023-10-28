@@ -606,34 +606,6 @@ h2 {
 	font-weight: 300;
 }
 
-.container-main {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	margin: 0 auto;
-	max-width: 1300px;
-	padding: 2rem 1rem;
-}
-
-.container-header {
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-pack: justify;
-	-ms-flex-pack: justify;
-	justify-content: space-between;
-	min-height: 80px;
-}
-
-.container-results {
-	-webkit-box-flex: 3;
-	-ms-flex: 3;
-	flex: 3;
-}
-
 .container-footer {
 	margin: 4rem 0;
 }
@@ -645,19 +617,6 @@ em {
 em,
 mark {
 	background: rgba(226, 164, 0, 0.4);
-}
-
-.clear-filters {
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-}
-
-.clear-filters svg {
-	margin-right: 8px;
 }
 
 .container-body .ais-Panel {

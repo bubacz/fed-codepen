@@ -146,13 +146,13 @@ new Vue({
 		isProductVariant(recordType) {
 			return recordType === "ProductVariant";
 		},
-		getImageSrc(item) {
-			return this.isProductVariant(item.recordType)
+		getImageSrc(item, recordType) {
+			return this.isProductVariant(recordType)
 				? helpers.buildProductVariantImageSrc(item)
 				: helpers.buildProductImageSrc(item);
 		},
-		getLinkUrl(item) {
-			return this.isProductVariant(item.recordType)
+		getLinkUrl(item, recordType) {
+			return this.isProductVariant(recordType)
 				? helpers.buildProductVariantLinkUrl(item)
 				: helpers.buildProductLinkUrl(item);
 		},

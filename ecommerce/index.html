@@ -290,13 +290,15 @@
             <header class="container-header container-options container-gap no-gutters align-items-end flex-wrap">
               <div class="col-sm">
                 <ais-stats>
-                  <template v-slot="{ nbHits, nbPages, hitsPerPage, page, query }">
+                  <template #default="{ nbHits, nbPages, hitsPerPage, page, query }">
                     <p class="mb-0">
-                      Showing
-                      {{ (page * hitsPerPage) + 1 }} -
-                      {{ ((page + 1) * (hitsPerPage)) < nbHits ? (page + 1) * (hitsPerPage) : nbHits }}
-                      of <strong>{{ nbHits }} results</strong>
-                      for "{{ query }}"
+                      <template v-if="nbHits">
+                        Showing
+                        {{ (page * hitsPerPage) + 1 }} -
+                        {{ ((page + 1) * (hitsPerPage)) < nbHits ? (page + 1) * (hitsPerPage) : nbHits }}
+                        of <strong>{{ nbHits }} results</strong>
+                        for "{{ query }}"
+                      </template>
                     </p>
                   </template>
                 </ais-stats>
@@ -352,6 +354,14 @@
 
               <template v-slot="{ items, sendEvent }">
                 <ul class="ais-Hits-list">
+                  <ais-stats class="grid-span-full">
+                    <template #default="{ nbHits, nbPages, hitsPerPage, page, query }">
+                      <div v-show="!items.length" class="alert alert-info mb-0">
+                        <p class="mb-0">No results found <span v-if="query"> for <b>"{{ query }}"</b></span></p>
+                      </div>
+                    </template>
+                  </ais-stats>
+
                   <template v-for="item in items" :key="item.objectID">
                     
                     <!-- Product Variant Template Start -->
@@ -555,10 +565,6 @@
               </template>
                 
             </ais-hits>
-
-            <ais-panel>
-              <no-results />
-            </ais-panel>
 
             <footer class="container-footer">
               <ais-pagination :padding="2">

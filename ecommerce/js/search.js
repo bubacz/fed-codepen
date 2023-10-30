@@ -145,14 +145,10 @@ new Vue({
 			return recordType === "ProductVariant";
 		},
 		getImageSrc(item, recordType) {
-			return this.isProductVariant(recordType)
-				? helpers.buildProductVariantImageSrc(item)
-				: helpers.buildProductImageSrc(item);
+			return this.isProductVariant(recordType) ? helpers.buildProductVariantImageSrc(item) : helpers.buildProductImageSrc(item);
 		},
 		getLinkUrl(item, recordType) {
-			return this.isProductVariant(recordType)
-				? helpers.buildProductVariantLinkUrl(item)
-				: helpers.buildProductLinkUrl(item);
+			return this.isProductVariant(recordType) ? helpers.buildProductVariantLinkUrl(item) : helpers.buildProductLinkUrl(item);
 		},
 		toDisplayLabel(str) {
 			if (str.includes("manufacturername")) return "Brands";

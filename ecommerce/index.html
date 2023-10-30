@@ -168,9 +168,9 @@
                     <ais-range-input attribute="salePrice">
                       <template #default="{ currentRefinement, range, refine, canRefine }">
                         <vue-slider
-                          :min="range.min"
-                          :max="range.max"
-                          :value="toValue(currentRefinement, range)"
+                          :min="range.min || 0"
+                          :max="range.max || 0"
+                          :value="toValue(currentRefinement, range || 0)"
                           :disabled="!canRefine"
                           :lazy="true"
                           :use-keyboard="true"
@@ -230,6 +230,7 @@
                               class="btn hit-rating px-0"
                               :style="{ fontWeight: item.isRefined ? 'bold' : '' }"
                               v-on:click.prevent="refine(item.value)"
+                              :aria-label="`${item.label} or higher`"
                             >
                             
                               <!-- Start: Rating icons -->

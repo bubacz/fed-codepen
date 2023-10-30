@@ -55,7 +55,7 @@
 		bottom: 0;
 		display: flex;
 		justify-content: space-between;
-		margin: 0 -1rem;
+		margin: 0 -2rem;
 		padding: 1rem;
 		position: fixed;
 		width: 100%;
@@ -119,7 +119,7 @@
 	}
 
 	.container-main{
-		padding: 2rem;
+		padding: 1rem;
 	}
 
 	.container-options {

@@ -1,4 +1,5 @@
 import * as helpers from "./helpers.js";
+import { createInfiniteHitsSessionStorageCache } from "./infiniteHitsCache.js";
 
 const indexName = "Production";
 const algoliaClient = algoliasearch("3VY17DELF4", "455080cdf8c3e2f23fd7d106fac363c7");
@@ -32,6 +33,7 @@ new Vue({
 		return {
 			indexName,
 			searchClient,
+			cache: createInfiniteHitsSessionStorageCache("searchHits"),
 			maxRating: 5,
 			defaultImage: "https://d30ec9xstuh8sw.cloudfront.net/nopictureicon.gif",
 			routing: {

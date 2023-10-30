@@ -294,8 +294,7 @@
                   <template #default="{ nbHits, nbPages, hitsPerPage, page, query }">
                     <p class="mb-0">
                       <template v-if="nbHits">
-                        Showing
-                        {{ (page * hitsPerPage) + 1 }} -
+                        Showing 1 - 
                         {{ ((page + 1) * (hitsPerPage)) < nbHits ? (page + 1) * (hitsPerPage) : nbHits }}
                         of <strong>{{ nbHits }} results</strong>
                         for "{{ query }}"
@@ -351,9 +350,9 @@
               </ais-current-refinements>
             </aside>
 
-            <ais-hits>
+            <ais-infinite-hits :cache="cache">
 
-              <template v-slot="{ items, sendEvent }">
+              <template v-slot="{ items, refineNext, isLastPage, sendEvent }">
                 <ul class="ais-Hits-list">
                   <ais-stats class="grid-span-full">
                     <template #default="{ nbHits, nbPages, hitsPerPage, page, query }">
@@ -560,157 +559,18 @@
                       </li>
                     </template>
                     <!-- Product Template End -->
-
                   </template>
                 </ul>
+
+                <template v-if="!isLastPage">
+                  <button class="btn btn-secondary text-uppercase d-block rounded-0 mt-5 mx-auto px-5"
+                          v-on:click="refineNext">
+                    Load More Products
+                  </button>
+                </template>
               </template>
                 
-            </ais-hits>
-
-            <footer class="container-footer">
-              <ais-pagination :padding="2">
-                <template #default="{
-                                  currentRefinement,
-                                  pages,
-                                  isFirstPage,
-                                  isLastPage,
-                                  refine,
-                                  createURL,
-                                }">
-                  <ul class="ais-Pagination-list">
-                    <li
-                      class="ais-Pagination-item ais-Pagination-item--previousPage ais-Pagination-item--disabled"
-                      v-if="isFirstPage"
-                    >
-                      <span class="ais-Pagination-link">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 10 10"
-                          width="10"
-                          height="10"
-                        >
-                          <g
-                            fill="none"
-                            fill-rule="evenodd"
-                            stroke="#000"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.143"
-                          >
-                            <path d="M9 5H1M5 9L1 5l4-4" />
-                          </g>
-                        </svg>
-                      </span>
-                    </li>
-
-                    <li
-                      class="ais-Pagination-item ais-Pagination-item--previousPage"
-                      v-if="!isFirstPage"
-                    >
-                      <a
-                        class="ais-Pagination-link"
-                        :href="createURL(currentRefinement - 1)"
-                        v-on:click.prevent="refine(currentRefinement - 1)"
-                        aria-label="Previous"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 10 10"
-                          width="10"
-                          height="10"
-                        >
-                          <g
-                            fill="none"
-                            fill-rule="evenodd"
-                            stroke="#000"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.143"
-                          >
-                            <path d="M9 5H1M5 9L1 5l4-4" />
-                          </g>
-                        </svg>
-                      </a>
-                    </li>
-
-                    <li
-                      :class="{
-                                      'ais-Pagination-item': true,
-                                      'ais-Pagination-item--page': true,
-                                      'ais-Pagination-item--selected':
-                                        page === currentRefinement,
-                                    }"
-                      v-for="page in pages"
-                      :key="page"
-                    >
-                      <a
-                        class="ais-Pagination-link"
-                        :href="createURL(page)"
-                        :style="{
-                                        fontWeight: page === currentRefinement ? 'bold' : '',
-                                      }"
-                        v-on:click.prevent="refine(page)"
-                      >{{ page + 1 }}</a>
-                    </li>
-
-                    <li
-                      class="ais-Pagination-item ais-Pagination-item--nextPage"
-                      v-if="!isLastPage"
-                    >
-                      <a
-                        class="ais-Pagination-link"
-                        :href="createURL(currentRefinement + 1)"
-                        v-on:click.prevent="refine(currentRefinement + 1)"
-                        aria-label="Next"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 10 10"
-                          width="10"
-                          height="10"
-                        >
-                          <g
-                            fill="none"
-                            fill-rule="evenodd"
-                            stroke="#000"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.143"
-                          >
-                            <path d="M1 5h8M5 9l4-4-4-4" />
-                          </g>
-                        </svg>
-                      </a>
-                    </li>
-
-                    <li
-                      class="ais-Pagination-item ais-Pagination-item--nextPage ais-Pagination-item--disabled"
-                      v-if="isLastPage"
-                    >
-                      <span class="ais-Pagination-link">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 10 10"
-                          width="10"
-                          height="10"
-                        >
-                          <g
-                            fill="none"
-                            fill-rule="evenodd"
-                            stroke="#000"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.143"
-                          >
-                            <path d="M1 5h8M5 9l4-4-4-4" />
-                          </g>
-                        </svg>
-                      </span>
-                    </li>
-                  </ul>
-                </template>
-              </ais-pagination>
-            </footer>
+            </ais-infinite-hits>
           </section>
         </main>
 

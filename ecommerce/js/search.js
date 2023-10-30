@@ -50,10 +50,9 @@ new Vue({
 								indexUiState.hierarchicalMenu &&
 								indexUiState.hierarchicalMenu["categories.lvl0"] &&
 								indexUiState.hierarchicalMenu["categories.lvl0"].join("/"),
-							// rating: indexUiState.numericMenu && String(indexUiState.numericMenu.avgRating),
+							rating: indexUiState.numericMenu && indexUiState.numericMenu.avgRating,
 							price: indexUiState.range && indexUiState.range.salePrice,
 							sortBy: indexUiState.sortBy
-							// hitsPerPage: (indexUiState.hitsPerPage && String(indexUiState.hitsPerPage)) || undefined
 						};
 					},
 
@@ -72,11 +71,10 @@ new Vue({
 								range: {
 									salePrice: routeState.price
 								},
-								// numericMenu: {
-								// 	avgRating: (routeState.rating && Number(routeState.rating)) || undefined
-								// },
+								numericMenu: {
+									avgRating: routeState.rating
+								},
 								sortBy: routeState.sortBy
-								// hitsPerPage: Number(routeState.hitsPerPage)
 							}
 						};
 					}

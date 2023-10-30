@@ -213,6 +213,7 @@ mark {
 
 .hit-rating {
 	display: flex;
+	font-weight: normal;
 	gap: 0.5em;
 }
 

@@ -1,7 +1,10 @@
 import * as helpers from "./helpers.js";
 
 const indexName = "Production";
-const algoliaClient = algoliasearch("3VY17DELF4", "455080cdf8c3e2f23fd7d106fac363c7");
+const algoliaClient = algoliasearch(
+	"3VY17DELF4",
+	"455080cdf8c3e2f23fd7d106fac363c7"
+);
 const searchClient = {
 	...algoliaClient,
 	search(requests) {
@@ -17,13 +20,13 @@ const searchClient = {
 					hitsPerPage: 0,
 					exhaustiveNbHits: false,
 					query: "",
-					params: ""
-				}))
+					params: "",
+				})),
 			});
 		}
 
 		return algoliaClient.search(requests);
-	}
+	},
 };
 
 new Vue({
@@ -50,9 +53,10 @@ new Vue({
 								indexUiState.hierarchicalMenu &&
 								indexUiState.hierarchicalMenu["categories.lvl0"] &&
 								indexUiState.hierarchicalMenu["categories.lvl0"].join("/"),
-							rating: indexUiState.numericMenu && indexUiState.numericMenu.avgRating,
+							rating:
+								indexUiState.numericMenu && indexUiState.numericMenu.avgRating,
 							price: indexUiState.range && indexUiState.range.salePrice,
-							sortBy: indexUiState.sortBy
+							sortBy: indexUiState.sortBy,
 						};
 					},
 
@@ -63,34 +67,38 @@ new Vue({
 								query: routeState.query,
 								page: routeState.page,
 								hierarchicalMenu: {
-									"categories.lvl0": (routeState.category && routeState.category.split("/")) || undefined
+									"categories.lvl0":
+										(routeState.category && routeState.category.split("/")) ||
+										undefined,
 								},
 								refinementList: {
-									manufacturerName: (routeState.brands && routeState.brands.split("/")) || undefined
+									manufacturerName:
+										(routeState.brands && routeState.brands.split("/")) ||
+										undefined,
 								},
 								range: {
-									salePrice: routeState.price
+									salePrice: routeState.price,
 								},
 								numericMenu: {
-									avgRating: routeState.rating
+									avgRating: routeState.rating,
 								},
-								sortBy: routeState.sortBy
-							}
+								sortBy: routeState.sortBy,
+							},
 						};
-					}
-				}
-			}
+					},
+				},
+			},
 		};
 	},
 	created() {
-		this.onKeyUp = event => {
+		this.onKeyUp = (event) => {
 			if (event.key !== "Escape") {
 				return;
 			}
 			this.closeFilters();
 		};
 
-		this.onClick = event => {
+		this.onClick = (event) => {
 			if (event.target !== this.header) {
 				return;
 			}
@@ -103,13 +111,20 @@ new Vue({
 		this.header = document.querySelector("#header");
 	},
 	components: {
-		vueSlider: window["vue-slider-component"]
+		vueSlider: window["vue-slider-component"],
 	},
 	methods: {
 		refineSearch: helpers.debounce((refine, value) => {
 			// Wait to search until after the user has stopped typing for 500ms
 			refine(value);
 		}),
+		toggleRefinement(item, refine) {
+			if (item.isRefined) {
+				refine("%7B%22start%22:0%7D");
+			} else {
+				refine(item.value);
+			}
+		},
 		goToSearchPage(query) {
 			location.href = "/search.aspx?query=" + query;
 		},
@@ -117,17 +132,20 @@ new Vue({
 			return new Intl.NumberFormat("en-CA", {
 				style: "currency",
 				currency: "CAD",
-				maximumFractionDigits: digits
+				maximumFractionDigits: digits,
 			}).format(value);
 		},
 		formatNumber(value = 0, digits = 0) {
 			return Number(value).toLocaleString("en-CA", {
 				minimumFractionDigits: digits,
-				maximumFractionDigits: digits
+				maximumFractionDigits: digits,
 			});
 		},
 		toValue(value, range) {
-			return [typeof value.min === "number" ? value.min : range.min, typeof value.max === "number" ? value.max : range.max];
+			return [
+				typeof value.min === "number" ? value.min : range.min,
+				typeof value.max === "number" ? value.max : range.max,
+			];
 		},
 		openFilters() {
 			document.body.classList.add("filtering");
@@ -145,10 +163,14 @@ new Vue({
 			return recordType === "ProductVariant";
 		},
 		getImageSrc(item, recordType) {
-			return this.isProductVariant(recordType) ? helpers.buildProductVariantImageSrc(item) : helpers.buildProductImageSrc(item);
+			return this.isProductVariant(recordType)
+				? helpers.buildProductVariantImageSrc(item)
+				: helpers.buildProductImageSrc(item);
 		},
 		getLinkUrl(item, recordType) {
-			return this.isProductVariant(recordType) ? helpers.buildProductVariantLinkUrl(item) : helpers.buildProductLinkUrl(item);
+			return this.isProductVariant(recordType)
+				? helpers.buildProductVariantLinkUrl(item)
+				: helpers.buildProductLinkUrl(item);
 		},
 		toDisplayLabel(str) {
 			if (str.includes("manufacturername")) return "Brands";
@@ -176,6 +198,6 @@ new Vue({
 				// e.g. If rating is 3.55 then the fifth flame will not be filled
 				return 0;
 			}
-		}
-	}
+		},
+	},
 });

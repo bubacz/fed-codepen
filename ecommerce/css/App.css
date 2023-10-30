@@ -115,7 +115,6 @@ mark {
 
 .header .ais-SearchBox .ais-SearchBox-input {
 	background-color: #fff;
-	border-radius: 8px;
 	box-shadow: 0 4px 48px 0 rgba(0, 0, 0, 0.2);
 	font-family: Hind, sans-serif;
 	height: 64px;
@@ -145,7 +144,7 @@ mark {
 }
 
 .ais-SearchBox-submit {
-	color: #e2a400;
+	color: #b00;
 }
 
 .ais-RefinementList .ais-SearchBox-input {
@@ -249,7 +248,6 @@ mark {
 
 .hits-empty-state .ais-ClearRefinements-button {
 	background: rgba(10, 8, 41, 0.04);
-	border-radius: 3px;
 	color: #21243d;
 	min-height: 48px;
 	padding: 16px 24px;
@@ -271,7 +269,7 @@ mark {
 }
 
 .ais-ToggleRefinement-checkbox:checked::before {
-	color: #e2a400;
+	color: #b00;
 }
 
 .ais-ToggleRefinement-checkbox::before {

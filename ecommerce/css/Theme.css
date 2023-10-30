@@ -120,7 +120,7 @@ a[class^="ais-"] {
 }
 
 .ais-RatingMenu-starIcon--full {
-	fill: #e2a400;
+	fill: #b00;
 }
 
 .ais-RatingMenu-starIcon--empty {
@@ -174,7 +174,6 @@ a[class^="ais-"] {
 	appearance: none;
 	background-color: rgba(65, 66, 71, 0.06);
 	border: none;
-	border-radius: 3px;
 	color: rgba(33, 36, 61, 0.8);
 	font-family: inherit;
 	min-height: 54px;
@@ -234,7 +233,6 @@ a[class^="ais-"] {
 /* SFFV search box */
 
 .ais-RefinementList .ais-SearchBox-input {
-	border-radius: 3px;
 	color: rgba(33, 36, 61, 0.8);
 	font-size: 0.8rem;
 	min-height: 40px;
@@ -273,7 +271,7 @@ a[class^="ais-"] {
 }
 
 .ais-RefinementList-item--selected .ais-RefinementList-checkbox {
-	background-color: #e2a400;
+	background-color: #b00;
 }
 
 .ais-RefinementList-item--selected .ais-RefinementList-checkbox::after {
@@ -372,7 +370,7 @@ a[class^="ais-"] {
 }
 
 .ais-ToggleRefinement-checkbox:checked {
-	background: #e2a400;
+	background: #b00;
 }
 
 .ais-ToggleRefinement-checkbox::after {
@@ -405,7 +403,7 @@ a[class^="ais-"] {
 }
 
 .ais-RangeSlider .rheostat-progress {
-	background-color: #e2a400;
+	background-color: #b00;
 	border-radius: 3px;
 	height: 3px;
 	top: 0;
@@ -474,12 +472,11 @@ a[class^="ais-"] {
 
 .ais-Pagination-item {
 	background-color: rgba(65, 66, 71, 0.08);
-	border-radius: 4px;
 	color: #414247;
 }
 
 .ais-Pagination-item--selected {
-	background-color: #e2a400;
+	background-color: #b00;
 	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0));
 	font-weight: bold;
 }

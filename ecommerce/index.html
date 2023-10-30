@@ -288,7 +288,7 @@
           </div>
   
           <section class="container-results">
-            <header class="container-header container-options container-gap no-gutters align-items-end flex-wrap">
+            <header class="container-header container-options container-gap no-gutters align-items-center flex-wrap">
               <div class="col-sm">
                 <ais-stats>
                   <template #default="{ nbHits, nbPages, hitsPerPage, page, query }">
@@ -308,7 +308,7 @@
               <div class="col-sm-auto">
                 <ais-sort-by
                   class="container-option"
-                  :class-names="{'ais-SortBy-select': 'form-control rounded-0'}"
+                  :class-names="{'ais-SortBy-select': 'custom-select rounded-0'}"
                   :items="[
                                     { value: indexName, label: 'Featured' },
                                     { value: `${indexName}_productName_asc`, label: 'Name (A to Z)' },
